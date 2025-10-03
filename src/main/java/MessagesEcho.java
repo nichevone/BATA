@@ -3,13 +3,12 @@ import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 
 // Audio libraries
-import javax.sound.sampled.AudioFormat;
 
 // Exceptions
 import java.net.SocketException;
 import java.io.IOException;
 
-public class Server {
+public class MessagesEcho {
     public static void main(String[] args) {
         int port = 8080;
 

@@ -2,8 +2,6 @@
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 
-// Audio libraries
-
 // Exceptions
 import java.net.SocketException;
 import java.io.IOException;

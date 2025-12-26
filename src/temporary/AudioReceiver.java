@@ -35,10 +35,16 @@ public class AudioReceiver {
                     buffer, 0, BUFFER_SIZE
             );
 
+            System.out.println("Waiting for first packet...");
+            socket.receive(packetReceive);
+
+            final InetAddress localAddress = InetAddress.getLocalHost();
+            System.out.println("Your IP address: " + localAddress);
+            System.out.println("Receiving data from: " + packetReceive.getAddress());
+
             System.out.println("Receiving is started");
 
             while (socket.isBound()) {
-
                 socket.receive(packetReceive);
                 speaker.write(buffer, 0, BUFFER_SIZE);
             }

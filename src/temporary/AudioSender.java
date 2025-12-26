@@ -30,16 +30,21 @@ public class AudioSender {
             microphone.open(format);
             microphone.start();
 
+            final InetAddress localAddress = InetAddress.getLocalHost();
+            InetAddress receiverAddress = InetAddress.getByName("192.168.0.103");
+            System.out.println("Your IP address: " + localAddress);
+            System.out.println("Socket is sending data to address: " + receiverAddress);
+
             byte[] buffer = new byte[BUFFER_SIZE];
             DatagramPacket packetSend = new DatagramPacket(
                     buffer, BUFFER_SIZE,
-                    InetAddress.getLocalHost(), CLIENT_PORT
+                    receiverAddress, CLIENT_PORT
             );
-            long startTime = System.currentTimeMillis();
-            long duration = 10_000; // In millis => 5 seconds
 
             System.out.println("Sending is started");
 
+            long startTime = System.currentTimeMillis();
+            long duration = 10_000; // In millis => 10 seconds
             while (System.currentTimeMillis() - startTime < duration) {
                 int bytesRead = microphone.read(buffer, 0, BUFFER_SIZE);
                 if (bytesRead > 0) {

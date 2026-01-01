@@ -31,9 +31,7 @@ public class Main {
                     new Thread(() -> receiver.receive(port)).start();
                     while (receiver.getSenderAddress() == null) {
                         Thread.sleep(2000);
-                        System.out.print("-");
                     }
-                    System.out.println("\n");
                     new Thread(() -> sender.send(port, receiver.getSenderAddress())).start();
                     break;
 

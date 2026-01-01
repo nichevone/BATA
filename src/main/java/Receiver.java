@@ -1,15 +1,12 @@
 import javax.sound.sampled.*;
 import java.net.*;
-import java.util.logging.*;
 
 import java.io.IOException;
 
 public class Receiver {
-    private static final Logger LOGGER = Logger.getLogger(Receiver.class.getName());
-
     final int BUFFER_SIZE = 1024;
     final AudioFormat format = new AudioFormat(
-            16000.0f, // Sample rate,
+            8000.0f, // Sample rate,
             16, // Sample size in bits
             1, // Channels
             true, // Signed

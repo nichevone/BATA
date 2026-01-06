@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="VoiceChat:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/VoiceChat_jar</output-path>
+    <root id="archive" name="VoiceChat.jar">
+      <element id="directory" name="resources">
+        <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/icon.png" />
+      </element>
+      <element id="module-output" name="VoiceChat" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/miglayout/miglayout/3.7.4/miglayout-3.7.4.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

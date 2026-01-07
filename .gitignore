@@ -39,3 +39,8 @@ build/
 
 ### Temporary ###
 src/temporary
+src/main/java/*.class
+
+### Laptop SSH ###
+sshKey
+sshKey.pub

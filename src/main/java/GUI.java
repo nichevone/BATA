@@ -21,10 +21,18 @@ public class GUI implements ActionListener {
     private JPanel cardsPanel;
     private CardLayout cardLayout;
 
+	// StartCard 
     private JPanel startCard;
+    private JButton hostCardButton;
+    private JButton connectCardButton;
+    
+	// HostCard
     private JPanel hostingCard;
+    
+	// ConnectngCard
     private JPanel connectingCard;
-    private JButton hostButton;
+    private JTextField portTextField;
+    private JTextField addressTextField;
     private JButton connectButton;
 
     public GUI(int windowWidth, int windowHeight) {
@@ -64,15 +72,15 @@ public class GUI implements ActionListener {
         JLabel chooseActionLabel = new JLabel("Choose action:", JLabel.CENTER);
         chooseActionLabel.setFont(titleLabelFont);
 
-        hostButton = new JButton(HOST_CARD);
-        hostButton.setFont(buttonFont);
-        hostButton.addActionListener(this);
-        connectButton = new JButton(CONNECT_CARD);
-        connectButton.setFont(buttonFont);
-        connectButton.addActionListener(this);
+        hostCardButton = new JButton(HOST_CARD);
+        hostCardButton.setFont(buttonFont);
+        hostCardButton.addActionListener(this);
+        connectCardButton = new JButton(CONNECT_CARD);
+        connectCardButton.setFont(buttonFont);
+        connectCardButton.addActionListener(this);
 
-        actionChoicePanel.add(hostButton);
-        actionChoicePanel.add(connectButton);
+        actionChoicePanel.add(hostCardButton);
+        actionChoicePanel.add(connectCardButton);
 
         panel.add(chooseActionLabel, BorderLayout.NORTH); // Label first
         panel.add(actionChoicePanel, BorderLayout.CENTER); // Panel w/ buttons after the label
@@ -90,15 +98,40 @@ public class GUI implements ActionListener {
         return hostPanel;
     }
 
+	// TODO: get text fields and buttons actions
     private JPanel createConnectCard() {
-        JPanel connectPanel = new JPanel();
-        JLabel titleLabel = new JLabel("CONNECTING");
-        titleLabel.setFont(textLabelFont);
+        JPanel connectPanel = new JPanel(new GridLayout(6, 1, 10, 10));
+        JLabel titleLabel = new JLabel("CONNECTING", JLabel.CENTER);
+        JLabel portLabel = new JLabel("Enter port:", JLabel.CENTER);
+        JLabel addressLabel = new JLabel("Enter host IP-address (IPv4):", JLabel.CENTER);
+        
+        titleLabel.setFont(titleLabelFont);
+        portLabel.setFont(textLabelFont);
+		addressLabel.setFont(textLabelFont);
+		
+		portTextField = new JTextField(15);
+		addressTextField = new JTextField(15);
+		connectButton = new JButton("Connect");
+		
+		// TODO: text fields font
+		//portTextField.setFont();
+		//addressTextField.setFont();
+		connectButton.setFont(buttonFont);
+		
         connectPanel.add(titleLabel);
+        
+		connectPanel.add(portLabel);
+		connectPanel.add(portTextField);
+		
+		connectPanel.add(addressLabel);
+		connectPanel.add(addressTextField);
+		
+		connectPanel.add(connectButton);
 
         return connectPanel;
     }
 
+	// TODO: Taking strings from text fields
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();

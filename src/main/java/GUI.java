@@ -1,6 +1,9 @@
+// Main swing & awt libraries
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.event.*;
 import java.awt.*;
+// Reading icon
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
@@ -13,27 +16,29 @@ public class GUI implements ActionListener {
     private final String CONNECT_CARD = "CONNECT";
     private final String START_CARD = "START";
 
-    private final Font titleLabelFont = new Font("SansSerif", Font.BOLD, 32);
-    private final Font textLabelFont = new Font("SansSerif", Font.PLAIN, 16);
-    private final Font buttonFont = new Font("SansSerif", Font.ITALIC, 24);
+    private String port;
+    private String address;
+
+    private final Font titleLabelFont = new Font("SansSerif", Font.BOLD, 28);
+    private final Font textLabelFont = new Font("SansSerif", Font.PLAIN, 20);
+    private final Font textFieldFont = new Font("SansSerif", Font.PLAIN, 20);
+    private final Font buttonFont = new Font("SansSerif", Font.ITALIC, 20);
+
+    private final Border APP_BORDER = BorderFactory.createEmptyBorder(20, 20, 20, 20);
 
     private JFrame frame;
     private JPanel cardsPanel;
     private CardLayout cardLayout;
 
-	// StartCard 
     private JPanel startCard;
-    private JButton hostCardButton;
-    private JButton connectCardButton;
-    
-	// HostCard
     private JPanel hostingCard;
-    
-	// ConnectngCard
     private JPanel connectingCard;
+
     private JTextField portTextField;
     private JTextField addressTextField;
     private JButton connectButton;
+    private JButton hostNavButton;
+    private JButton connectNavButton;
 
     public GUI(int windowWidth, int windowHeight) {
         this.windowWidth = windowWidth;
@@ -60,6 +65,7 @@ public class GUI implements ActionListener {
         frame.setSize(windowWidth, windowHeight);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
         frame.setVisible(true);
 
         cardLayout.show(cardsPanel, START_CARD);
@@ -67,28 +73,29 @@ public class GUI implements ActionListener {
 
     private JPanel createStartCard() {
         JPanel panel = new JPanel(new GridLayout(2, 1));
-        JPanel actionChoicePanel = new JPanel(new GridLayout(2, 1, 20, 20));
+        JPanel actionChoicePanel = new JPanel(new GridLayout(2, 1, 10, 10));
 
         JLabel chooseActionLabel = new JLabel("Choose action:", JLabel.CENTER);
         chooseActionLabel.setFont(titleLabelFont);
 
-        hostCardButton = new JButton(HOST_CARD);
-        hostCardButton.setFont(buttonFont);
-        hostCardButton.addActionListener(this);
-        connectCardButton = new JButton(CONNECT_CARD);
-        connectCardButton.setFont(buttonFont);
-        connectCardButton.addActionListener(this);
+        hostNavButton = new JButton(HOST_CARD);
+        hostNavButton.setFont(buttonFont);
+        hostNavButton.addActionListener(this);
+        connectNavButton = new JButton(CONNECT_CARD);
+        connectNavButton.setFont(buttonFont);
+        connectNavButton.addActionListener(this);
 
-        actionChoicePanel.add(hostCardButton);
-        actionChoicePanel.add(connectCardButton);
+        actionChoicePanel.add(hostNavButton);
+        actionChoicePanel.add(connectNavButton);
 
         panel.add(chooseActionLabel, BorderLayout.NORTH); // Label first
         panel.add(actionChoicePanel, BorderLayout.CENTER); // Panel w/ buttons after the label
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panel.setBorder(APP_BORDER);
 
         return panel;
     }
 
+    // TODO: host card
     private JPanel createHostCard() {
         JPanel hostPanel = new JPanel();
         JLabel titleLabel = new JLabel("HOSTING");
@@ -98,45 +105,57 @@ public class GUI implements ActionListener {
         return hostPanel;
     }
 
-	// TODO: get text fields and buttons actions
     private JPanel createConnectCard() {
-        JPanel connectPanel = new JPanel(new GridLayout(6, 1, 10, 10));
+        JPanel connectPanel = new JPanel(new GridLayout(6, 2, 10, 10));
         JLabel titleLabel = new JLabel("CONNECTING", JLabel.CENTER);
         JLabel portLabel = new JLabel("Enter port:", JLabel.CENTER);
         JLabel addressLabel = new JLabel("Enter host IP-address (IPv4):", JLabel.CENTER);
-        
+        portTextField = new JTextField(15);
+        addressTextField = new JTextField(15);
+        connectButton = new JButton("Connect");
+
+        portTextField.setHorizontalAlignment(JTextField.CENTER);
+        addressTextField.setHorizontalAlignment(JTextField.CENTER);
+        connectButton.addActionListener(this);
+
         titleLabel.setFont(titleLabelFont);
         portLabel.setFont(textLabelFont);
-		addressLabel.setFont(textLabelFont);
-		
-		portTextField = new JTextField(15);
-		addressTextField = new JTextField(15);
-		connectButton = new JButton("Connect");
-		
-		// TODO: text fields font
-		//portTextField.setFont();
-		//addressTextField.setFont();
-		connectButton.setFont(buttonFont);
-		
+        addressLabel.setFont(textLabelFont);
+        portTextField.setFont(textFieldFont);
+        addressTextField.setFont(textFieldFont);
+        connectButton.setFont(buttonFont);
+
         connectPanel.add(titleLabel);
-        
-		connectPanel.add(portLabel);
-		connectPanel.add(portTextField);
-		
-		connectPanel.add(addressLabel);
-		connectPanel.add(addressTextField);
-		
-		connectPanel.add(connectButton);
+        connectPanel.add(portLabel);
+        connectPanel.add(portTextField);
+        connectPanel.add(addressLabel);
+        connectPanel.add(addressTextField);
+        connectPanel.add(connectButton);
+        connectPanel.setBorder(APP_BORDER);
 
         return connectPanel;
     }
 
-	// TODO: Taking strings from text fields
+    // TODO: organize this thing to readable format
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println(e.paramString());
         String command = e.getActionCommand();
-        System.out.println(command);
-        cardLayout.show(cardsPanel, command);
+        if (command.equals("Connect")) {
+            port = portTextField.getText();
+            address = addressTextField.getText();
+            if (!isAddressValid(address)) {
+                addressTextField.setText("Invalid address");
+            } else {
+                connectButton.setText("Connecting...");
+            }
+        } else {
+            cardLayout.show(cardsPanel, command);
+        }
+    }
+
+    private boolean isAddressValid(String address) {
+        return address.matches("^\\d{3}[.]\\d+[.]\\d[.]\\d+$"); // Matches IP-address, e.g. 127.0.0.1
     }
 
     private Image getIconImage() {

@@ -21,10 +21,11 @@ public class GUI implements ActionListener {
 
     private final Font titleLabelFont = new Font("SansSerif", Font.BOLD, 28);
     private final Font textLabelFont = new Font("SansSerif", Font.PLAIN, 20);
-    private final Font textFieldFont = new Font("SansSerif", Font.PLAIN, 20);
+    private final Font textFieldFont = new Font("SansSerif", Font.PLAIN, 12);
     private final Font buttonFont = new Font("SansSerif", Font.ITALIC, 20);
 
-    private final Border APP_BORDER = BorderFactory.createEmptyBorder(20, 20, 20, 20);
+    private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(20, 20, 20, 20);
+    private final Border LINE_BORDER = BorderFactory.createLineBorder(Color.BLACK);
 
     private JFrame frame;
     private JPanel cardsPanel;
@@ -37,6 +38,7 @@ public class GUI implements ActionListener {
     private JTextField portTextField;
     private JTextField addressTextField;
     private JButton connectButton;
+    private JButton hostButton;
     private JButton hostNavButton;
     private JButton connectNavButton;
 
@@ -65,7 +67,6 @@ public class GUI implements ActionListener {
         frame.setSize(windowWidth, windowHeight);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
         frame.setVisible(true);
 
         cardLayout.show(cardsPanel, START_CARD);
@@ -88,19 +89,73 @@ public class GUI implements ActionListener {
         actionChoicePanel.add(hostNavButton);
         actionChoicePanel.add(connectNavButton);
 
-        panel.add(chooseActionLabel, BorderLayout.NORTH); // Label first
-        panel.add(actionChoicePanel, BorderLayout.CENTER); // Panel w/ buttons after the label
-        panel.setBorder(APP_BORDER);
+        panel.add(chooseActionLabel); // Label first
+        panel.add(actionChoicePanel); // Panel w/ buttons after the label
+        panel.setBorder(EMPTY_BORDER);
 
         return panel;
     }
 
     // TODO: host card
     private JPanel createHostCard() {
-        JPanel hostPanel = new JPanel();
-        JLabel titleLabel = new JLabel("HOSTING");
-        titleLabel.setFont(textLabelFont);
-        hostPanel.add(titleLabel);
+        JLabel titleLabel = new JLabel("HOSTING", JLabel.CENTER);
+        titleLabel.setFont(titleLabelFont);
+
+        JPanel leftPane = new JPanel();
+        JTextArea infoTextArea = new JTextArea(18, 15);
+        // Wrap lines if too long
+        infoTextArea.setLineWrap(true);
+        infoTextArea.setWrapStyleWord(true);
+        infoTextArea.setFont(textFieldFont);
+
+        JScrollPane scrollPane = new JScrollPane(infoTextArea);
+        leftPane.add(scrollPane);
+
+        JPanel rightPane = new JPanel(new GridLayout(4, 1));
+        JLabel portLabel = new JLabel("Enter port:", JLabel.CENTER);
+        portTextField = new JTextField(10);
+        // Making some space between the portTextField and the hostButton
+        JLabel emptyLabel = new JLabel("");
+        hostButton = new JButton("Host");
+
+        portTextField.setHorizontalAlignment(JTextField.CENTER);
+        hostButton.addActionListener(this);
+
+        portLabel.setFont(textLabelFont);
+        portTextField.setFont(textFieldFont);
+        hostButton.setFont(buttonFont);
+
+        rightPane.add(portLabel);
+        rightPane.add(portTextField);
+        rightPane.add(emptyLabel);
+        rightPane.add(hostButton);
+        rightPane.setBorder(EMPTY_BORDER);
+
+        JPanel hostPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(5, 5, 5, 5);
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 2;
+        c.weightx = 1;
+        c.weighty = 0.5;
+        hostPanel.add(titleLabel, c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.2;
+        c.weighty = 1;
+        hostPanel.add(leftPane, c);
+
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.8;
+        c.weighty = 1;
+        hostPanel.add(rightPane, c);
 
         return hostPanel;
     }
@@ -131,7 +186,7 @@ public class GUI implements ActionListener {
         connectPanel.add(addressLabel);
         connectPanel.add(addressTextField);
         connectPanel.add(connectButton);
-        connectPanel.setBorder(APP_BORDER);
+        connectPanel.setBorder(EMPTY_BORDER);
 
         return connectPanel;
     }

@@ -8,41 +8,43 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
-public class GUI implements ActionListener {
+public class GuiAssembler implements ActionListener {
     private final int windowWidth;
     private final int windowHeight;
+
+    private String port;
+    private String address;
 
     private final String HOST_CARD = "HOST";
     private final String CONNECT_CARD = "CONNECT";
     private final String START_CARD = "START";
 
-    private String port;
-    private String address;
-
     private final Font titleLabelFont = new Font("SansSerif", Font.BOLD, 28);
     private final Font textLabelFont = new Font("SansSerif", Font.PLAIN, 20);
-    private final Font textFieldFont = new Font("SansSerif", Font.PLAIN, 12);
+    private final Font textAreaFont = new Font("SansSerif", Font.PLAIN, 12);
+    private final Font textFieldFont = new Font("SansSerif", Font.PLAIN, 20);
     private final Font buttonFont = new Font("SansSerif", Font.ITALIC, 20);
 
     private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(20, 20, 20, 20);
-    private final Border LINE_BORDER = BorderFactory.createLineBorder(Color.BLACK);
+    private final Border BOTTOM_BORDER = BorderFactory.createMatteBorder(0, 0, 2, 0, Color.GRAY);
+    private final int LAYOUT_GAP = 10;
 
     private JFrame frame;
     private JPanel cardsPanel;
     private CardLayout cardLayout;
-
     private JPanel startCard;
     private JPanel hostingCard;
     private JPanel connectingCard;
 
     private JTextField portTextField;
     private JTextField addressTextField;
-    private JButton connectButton;
-    private JButton hostButton;
+    private JTextArea infoTextArea;
     private JButton hostNavButton;
     private JButton connectNavButton;
+    private JButton actionButton;
 
-    public GUI(int windowWidth, int windowHeight) {
+
+    public GuiAssembler(int windowWidth, int windowHeight) {
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
         initUI();
@@ -53,9 +55,13 @@ public class GUI implements ActionListener {
         cardLayout = new CardLayout();
         cardsPanel = new JPanel(cardLayout);
 
-        startCard = createStartCard();
-        hostingCard = createHostCard();
-        connectingCard = createConnectCard();
+        try {
+            startCard = createStartPanel();
+            hostingCard = createPanel("HOSTING");
+            connectingCard = createPanel("CONNECTING");
+        } catch (IllegalArgumentException e) {
+            System.err.println("IllegalArgumentException in method createPanel: actionType is invalid.");
+        }
 
         cardsPanel.add(hostingCard, HOST_CARD);
         cardsPanel.add(connectingCard, CONNECT_CARD);
@@ -72,17 +78,17 @@ public class GUI implements ActionListener {
         cardLayout.show(cardsPanel, START_CARD);
     }
 
-    private JPanel createStartCard() {
+    private JPanel createStartPanel() {
         JPanel panel = new JPanel(new GridLayout(2, 1));
-        JPanel actionChoicePanel = new JPanel(new GridLayout(2, 1, 10, 10));
+        JPanel actionChoicePanel = new JPanel(new GridLayout(2, 1, LAYOUT_GAP, LAYOUT_GAP));
 
         JLabel chooseActionLabel = new JLabel("Choose action:", JLabel.CENTER);
         chooseActionLabel.setFont(titleLabelFont);
 
-        hostNavButton = new JButton(HOST_CARD);
+        hostNavButton = new JButton("HOST");
         hostNavButton.setFont(buttonFont);
         hostNavButton.addActionListener(this);
-        connectNavButton = new JButton(CONNECT_CARD);
+        connectNavButton = new JButton("CONNECT");
         connectNavButton.setFont(buttonFont);
         connectNavButton.addActionListener(this);
 
@@ -96,99 +102,93 @@ public class GUI implements ActionListener {
         return panel;
     }
 
-    // TODO: host card
-    private JPanel createHostCard() {
-        JLabel titleLabel = new JLabel("HOSTING", JLabel.CENTER);
-        titleLabel.setFont(titleLabelFont);
+    private JPanel createPanel(String actionType) throws IllegalArgumentException {
+        if (!(actionType.equals("HOSTING") || actionType.equals("CONNECTING"))) {
+            throw new IllegalArgumentException();
+        }
 
-        JPanel leftPane = new JPanel();
-        JTextArea infoTextArea = new JTextArea(18, 15);
-        // Wrap lines if too long
-        infoTextArea.setLineWrap(true);
-        infoTextArea.setWrapStyleWord(true);
-        infoTextArea.setFont(textFieldFont);
+        JLabel titleLabel = new JLabel(actionType, JLabel.CENTER);
+        titleLabel.setFont(titleLabelFont);
+        titleLabel.setBorder(BOTTOM_BORDER);
+
+        // Left part - text Area
+        JPanel leftPane = new JPanel(new BorderLayout());
+        infoTextArea = new JTextArea();
+        infoTextArea.setFont(textAreaFont);
 
         JScrollPane scrollPane = new JScrollPane(infoTextArea);
         leftPane.add(scrollPane);
 
-        JPanel rightPane = new JPanel(new GridLayout(4, 1));
+        // Right part - port input and the button
+        JPanel rightPane = new JPanel();
         JLabel portLabel = new JLabel("Enter port:", JLabel.CENTER);
-        portTextField = new JTextField(10);
-        // Making some space between the portTextField and the hostButton
-        JLabel emptyLabel = new JLabel("");
-        hostButton = new JButton("Host");
+        portTextField = new JTextField();
+        actionButton = new JButton("Host");
 
         portTextField.setHorizontalAlignment(JTextField.CENTER);
-        hostButton.addActionListener(this);
+        actionButton.addActionListener(this);
 
         portLabel.setFont(textLabelFont);
         portTextField.setFont(textFieldFont);
-        hostButton.setFont(buttonFont);
+        actionButton.setFont(buttonFont);
 
         rightPane.add(portLabel);
         rightPane.add(portTextField);
-        rightPane.add(emptyLabel);
-        rightPane.add(hostButton);
-        rightPane.setBorder(EMPTY_BORDER);
 
+        int componentsNumber = 0;
+        switch (actionType) {
+            case "HOSTING" -> {
+                componentsNumber = 5;
+                actionButton.setText("Host");
+                // Making some space between the portTextField and the hostButton
+                rightPane.add(new JLabel(""));
+                rightPane.add(new JLabel(""));
+            }
+            case "CONNECTING" -> {
+                componentsNumber = 5;
+                JLabel addressLabel = new JLabel("Enter host's IP-address:", JLabel.CENTER);
+                addressLabel.setFont(textLabelFont);
+                addressTextField = new JTextField();
+                addressTextField.setFont(textFieldFont);
+                addressTextField.setHorizontalAlignment(JTextField.CENTER);
+                actionButton.setText("Connect");
+
+                rightPane.add(addressLabel);
+                rightPane.add(addressTextField);
+            }
+        }
+        rightPane.add(actionButton);
+        rightPane.setLayout(new GridLayout(componentsNumber, 1, LAYOUT_GAP, LAYOUT_GAP));
+
+        // Assembling title, leftPane and the rightPane
         JPanel hostPanel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(5, 5, 5, 5);
+        c.insets = new Insets(0, LAYOUT_GAP, LAYOUT_GAP, LAYOUT_GAP);
 
+        c.anchor = GridBagConstraints.PAGE_START;
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
-        c.weightx = 1;
-        c.weighty = 0.5;
+        c.weightx = 0;
+        c.weighty = 0; // to make title take less screen space
         hostPanel.add(titleLabel, c);
 
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 1;
-        c.weightx = 0.2;
+        c.weightx = 2;
         c.weighty = 1;
         hostPanel.add(leftPane, c);
 
         c.gridx = 1;
         c.gridy = 1;
         c.gridwidth = 1;
-        c.weightx = 0.8;
+        c.weightx = 2;
         c.weighty = 1;
         hostPanel.add(rightPane, c);
 
         return hostPanel;
-    }
-
-    private JPanel createConnectCard() {
-        JPanel connectPanel = new JPanel(new GridLayout(6, 2, 10, 10));
-        JLabel titleLabel = new JLabel("CONNECTING", JLabel.CENTER);
-        JLabel portLabel = new JLabel("Enter port:", JLabel.CENTER);
-        JLabel addressLabel = new JLabel("Enter host IP-address (IPv4):", JLabel.CENTER);
-        portTextField = new JTextField(15);
-        addressTextField = new JTextField(15);
-        connectButton = new JButton("Connect");
-
-        portTextField.setHorizontalAlignment(JTextField.CENTER);
-        addressTextField.setHorizontalAlignment(JTextField.CENTER);
-        connectButton.addActionListener(this);
-
-        titleLabel.setFont(titleLabelFont);
-        portLabel.setFont(textLabelFont);
-        addressLabel.setFont(textLabelFont);
-        portTextField.setFont(textFieldFont);
-        addressTextField.setFont(textFieldFont);
-        connectButton.setFont(buttonFont);
-
-        connectPanel.add(titleLabel);
-        connectPanel.add(portLabel);
-        connectPanel.add(portTextField);
-        connectPanel.add(addressLabel);
-        connectPanel.add(addressTextField);
-        connectPanel.add(connectButton);
-        connectPanel.setBorder(EMPTY_BORDER);
-
-        return connectPanel;
     }
 
     // TODO: organize this thing to readable format
@@ -202,7 +202,7 @@ public class GUI implements ActionListener {
             if (!isAddressValid(address)) {
                 addressTextField.setText("Invalid address");
             } else {
-                connectButton.setText("Connecting...");
+                actionButton.setText("Connecting...");
             }
         } else {
             cardLayout.show(cardsPanel, command);
@@ -226,7 +226,7 @@ public class GUI implements ActionListener {
         int width = 600, height = 400;
 
         EventQueue.invokeLater(() -> {
-            GUI gui = new GUI(width, height);
+            GuiAssembler gui = new GuiAssembler(width, height);
         });
     }
 }

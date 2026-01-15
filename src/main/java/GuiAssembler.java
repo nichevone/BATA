@@ -26,8 +26,8 @@ public class GuiAssembler implements ActionListener {
     private final Font buttonFont = new Font("SansSerif", Font.ITALIC, 20);
 
     private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(20, 20, 20, 20);
-    private final Border BOTTOM_BORDER = BorderFactory.createMatteBorder(0, 0, 2, 0, Color.GRAY);
-    private final int LAYOUT_GAP = 10;
+    private final Border BOTTOM_BORDER = BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK);
+    private final int BORDER_GAP = 10;
 
     private JFrame frame;
     private JPanel cardsPanel;
@@ -42,6 +42,8 @@ public class GuiAssembler implements ActionListener {
     private JButton hostNavButton;
     private JButton connectNavButton;
     private JButton actionButton;
+    private JButton returnButton;
+    private JButton disconnectButtton;
 
 
     public GuiAssembler(int windowWidth, int windowHeight) {
@@ -80,7 +82,7 @@ public class GuiAssembler implements ActionListener {
 
     private JPanel createStartPanel() {
         JPanel panel = new JPanel(new GridLayout(2, 1));
-        JPanel actionChoicePanel = new JPanel(new GridLayout(2, 1, LAYOUT_GAP, LAYOUT_GAP));
+        JPanel actionChoicePanel = new JPanel(new GridLayout(2, 1, BORDER_GAP, BORDER_GAP));
 
         JLabel chooseActionLabel = new JLabel("Choose action:", JLabel.CENTER);
         chooseActionLabel.setFont(titleLabelFont);
@@ -120,73 +122,117 @@ public class GuiAssembler implements ActionListener {
         leftPane.add(scrollPane);
 
         // Right part - port input and the button
-        JPanel rightPane = new JPanel();
+        JPanel rightPane = new JPanel(new GridBagLayout());
+
         JLabel portLabel = new JLabel("Enter port:", JLabel.CENTER);
         portTextField = new JTextField();
-        actionButton = new JButton("Host");
+        actionButton = new JButton(); // text's assigned in the switch statement
+        disconnectButtton = new JButton("Disconnect");
+        returnButton = new JButton("Return");
 
         portTextField.setHorizontalAlignment(JTextField.CENTER);
         actionButton.addActionListener(this);
+        disconnectButtton.addActionListener(this);
+        returnButton.addActionListener(this);
 
         portLabel.setFont(textLabelFont);
         portTextField.setFont(textFieldFont);
         actionButton.setFont(buttonFont);
+        disconnectButtton.setFont(buttonFont);
+        returnButton.setFont(buttonFont);
 
-        rightPane.add(portLabel);
-        rightPane.add(portTextField);
+        GridBagConstraints rightGbc = new GridBagConstraints();
+        rightGbc.fill = GridBagConstraints.BOTH;
+        rightGbc.insets = new Insets(BORDER_GAP, 0, BORDER_GAP, BORDER_GAP);
 
-        int componentsNumber = 0;
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 0;
+        // Width, weight x & y will be used for all 
+        // components in the right pane except the buttons
+        rightGbc.gridwidth = 3;
+        rightGbc.weightx = 1;
+        rightGbc.weighty = 2;
+        rightPane.add(portLabel, rightGbc);
+        
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 1;
+        rightPane.add(portTextField, rightGbc);
+
         switch (actionType) {
             case "HOSTING" -> {
-                componentsNumber = 5;
                 actionButton.setText("Host");
-                // Making some space between the portTextField and the hostButton
-                rightPane.add(new JLabel(""));
-                rightPane.add(new JLabel(""));
+                
+                // Adding blank JLabels to make some space 
+                // between the portTextField and the hostButton
+                rightGbc.gridx = 0;
+                rightGbc.gridy = 2;
+                rightPane.add(new JLabel(""), rightGbc);
+                
+                rightGbc.gridx = 0;
+                rightGbc.gridy = 3;
+                rightPane.add(new JLabel(""), rightGbc);
             }
             case "CONNECTING" -> {
-                componentsNumber = 5;
+                actionButton.setText("Connect");
+                
                 JLabel addressLabel = new JLabel("Enter host's IP-address:", JLabel.CENTER);
                 addressLabel.setFont(textLabelFont);
+                
                 addressTextField = new JTextField();
                 addressTextField.setFont(textFieldFont);
                 addressTextField.setHorizontalAlignment(JTextField.CENTER);
-                actionButton.setText("Connect");
 
-                rightPane.add(addressLabel);
-                rightPane.add(addressTextField);
+                rightGbc.gridx = 0;
+                rightGbc.gridy = 2;
+                rightPane.add(addressLabel, rightGbc);
+                
+                rightGbc.gridx = 0;
+                rightGbc.gridy = 3;
+                rightPane.add(addressTextField, rightGbc);
             }
         }
-        rightPane.add(actionButton);
-        rightPane.setLayout(new GridLayout(componentsNumber, 1, LAYOUT_GAP, LAYOUT_GAP));
+        
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 4;
+        rightGbc.gridwidth = 1;
+        rightGbc.weightx = 0;
+        
+        rightGbc.weighty = 1;
+        rightPane.add(returnButton, rightGbc);
+        
+        rightGbc.gridx = 1;
+        rightGbc.gridy = 4;
+        rightPane.add(actionButton, rightGbc);
+        
+        rightGbc.gridx = 2;
+        rightGbc.gridy = 4;
+        rightPane.add(disconnectButtton, rightGbc);
 
         // Assembling title, leftPane and the rightPane
         JPanel hostPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(0, LAYOUT_GAP, LAYOUT_GAP, LAYOUT_GAP);
+        GridBagConstraints hostGbc = new GridBagConstraints();
+        hostGbc.fill = GridBagConstraints.BOTH;
+        hostGbc.insets = new Insets(0, BORDER_GAP, BORDER_GAP, BORDER_GAP);
 
-        c.anchor = GridBagConstraints.PAGE_START;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 2;
-        c.weightx = 0;
-        c.weighty = 0; // to make title take less screen space
-        hostPanel.add(titleLabel, c);
+        hostGbc.anchor = GridBagConstraints.PAGE_START;
+        hostGbc.gridx = 0;
+        hostGbc.gridy = 0;
+        hostGbc.gridwidth = 2;
+        hostGbc.weightx = 0;
+        hostGbc.weighty = 0; // to make title take less screen space
+        hostPanel.add(titleLabel, hostGbc);
 
-        c.gridx = 0;
-        c.gridy = 1;
-        c.gridwidth = 1;
-        c.weightx = 2;
-        c.weighty = 1;
-        hostPanel.add(leftPane, c);
+        hostGbc.gridx = 0;
+        hostGbc.gridy = 1;
+        hostGbc.gridwidth = 1;
+        hostGbc.weightx = 18;
+        hostGbc.weighty = 1;
+        hostPanel.add(leftPane, hostGbc);
 
-        c.gridx = 1;
-        c.gridy = 1;
-        c.gridwidth = 1;
-        c.weightx = 2;
-        c.weighty = 1;
-        hostPanel.add(rightPane, c);
+        hostGbc.gridx = 1;
+        hostGbc.gridy = 1;
+        hostGbc.weightx = 1;
+        hostPanel.add(rightPane, hostGbc);
 
         return hostPanel;
     }
@@ -195,18 +241,16 @@ public class GuiAssembler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.paramString());
-        String command = e.getActionCommand();
-        if (command.equals("Connect")) {
-            port = portTextField.getText();
-            address = addressTextField.getText();
-            if (!isAddressValid(address)) {
-                addressTextField.setText("Invalid address");
-            } else {
-                actionButton.setText("Connecting...");
-            }
-        } else {
-            cardLayout.show(cardsPanel, command);
+        
+        String command;
+        switch (e.getActionCommand()) {
+            case "HOST" -> command = HOST_CARD;
+            case "CONNECT" -> command = CONNECT_CARD;
+            case "Return" -> command = START_CARD;
+            default -> { return; }
         }
+        
+        cardLayout.show(cardsPanel, command);
     }
 
     private boolean isAddressValid(String address) {

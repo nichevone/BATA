@@ -7,6 +7,7 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.util.Formatter;
 
 public class GuiAssembler implements ActionListener {
     private final int windowWidth;
@@ -15,9 +16,14 @@ public class GuiAssembler implements ActionListener {
     private String port;
     private String address;
 
-    private final String HOST_CARD = "HOST";
-    private final String CONNECT_CARD = "CONNECT";
-    private final String START_CARD = "START";
+    // Buttons in the start card
+    private final String HOST_NAV_TEXT = "HOST";
+    private final String CONNECT_NAV_TEXT = "CONNECT";
+    private final String START_NAV_TEXT = "START";
+    // Buttons in the other cards
+    private final String CONNECT_BUTTON_TEXT = "Connect";
+    private final String HOST_BUTTON_TEXT = "Host";
+    private final String RETURN_BUTTON_TEXT = "Return";
 
     private final Font titleLabelFont = new Font("SansSerif", Font.BOLD, 28);
     private final Font textLabelFont = new Font("SansSerif", Font.PLAIN, 20);
@@ -41,9 +47,10 @@ public class GuiAssembler implements ActionListener {
     private JTextArea infoTextArea;
     private JButton hostNavButton;
     private JButton connectNavButton;
-    private JButton actionButton;
     private JButton returnButton;
-    private JButton disconnectButtton;
+    private JButton[] actionButton = new JButton[2];
+    private JButton[] disconnectButton = new JButton[2];
+
 
 
     public GuiAssembler(int windowWidth, int windowHeight) {
@@ -62,12 +69,12 @@ public class GuiAssembler implements ActionListener {
             hostingCard = createPanel("HOSTING");
             connectingCard = createPanel("CONNECTING");
         } catch (IllegalArgumentException e) {
-            System.err.println("IllegalArgumentException in method createPanel: actionType is invalid.");
+            System.err.println("IllegalArgumentException in method createPanel: \n"+e.getMessage());
         }
 
-        cardsPanel.add(hostingCard, HOST_CARD);
-        cardsPanel.add(connectingCard, CONNECT_CARD);
-        cardsPanel.add(startCard, START_CARD);
+        cardsPanel.add(hostingCard, HOST_NAV_TEXT);
+        cardsPanel.add(connectingCard, CONNECT_NAV_TEXT);
+        cardsPanel.add(startCard, START_NAV_TEXT);
         frame.add(cardsPanel, BorderLayout.CENTER);
 
         frame.setTitle("BATA");
@@ -77,7 +84,7 @@ public class GuiAssembler implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
-        cardLayout.show(cardsPanel, START_CARD);
+        cardLayout.show(cardsPanel, START_NAV_TEXT);
     }
 
     private JPanel createStartPanel() {
@@ -87,10 +94,10 @@ public class GuiAssembler implements ActionListener {
         JLabel chooseActionLabel = new JLabel("Choose action:", JLabel.CENTER);
         chooseActionLabel.setFont(titleLabelFont);
 
-        hostNavButton = new JButton("HOST");
+        hostNavButton = new JButton(HOST_NAV_TEXT);
         hostNavButton.setFont(buttonFont);
         hostNavButton.addActionListener(this);
-        connectNavButton = new JButton("CONNECT");
+        connectNavButton = new JButton(CONNECT_NAV_TEXT);
         connectNavButton.setFont(buttonFont);
         connectNavButton.addActionListener(this);
 
@@ -106,8 +113,11 @@ public class GuiAssembler implements ActionListener {
 
     private JPanel createPanel(String actionType) throws IllegalArgumentException {
         if (!(actionType.equals("HOSTING") || actionType.equals("CONNECTING"))) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("actionType is invalid");
         }
+
+        int actionIndex = 0;
+        if (actionType.equals("CONNECTING")) { actionIndex = 1; }
 
         JLabel titleLabel = new JLabel(actionType, JLabel.CENTER);
         titleLabel.setFont(titleLabelFont);
@@ -126,19 +136,21 @@ public class GuiAssembler implements ActionListener {
 
         JLabel portLabel = new JLabel("Enter port:", JLabel.CENTER);
         portTextField = new JTextField();
-        actionButton = new JButton(); // text's assigned in the switch statement
-        disconnectButtton = new JButton("Disconnect");
-        returnButton = new JButton("Return");
+        actionButton[actionIndex] = new JButton(); // text's assigned in the switch statement
+        disconnectButton[actionIndex] = new JButton("Disconnect");
+        returnButton = new JButton(RETURN_BUTTON_TEXT);
 
         portTextField.setHorizontalAlignment(JTextField.CENTER);
-        actionButton.addActionListener(this);
-        disconnectButtton.addActionListener(this);
+        actionButton[actionIndex].addActionListener(this);
+        disconnectButton[actionIndex].addActionListener(this);
         returnButton.addActionListener(this);
+
+        disconnectButton[actionIndex].setEnabled(false);
 
         portLabel.setFont(textLabelFont);
         portTextField.setFont(textFieldFont);
-        actionButton.setFont(buttonFont);
-        disconnectButtton.setFont(buttonFont);
+        actionButton[actionIndex].setFont(buttonFont);
+        disconnectButton[actionIndex].setFont(buttonFont);
         returnButton.setFont(buttonFont);
 
         GridBagConstraints rightGbc = new GridBagConstraints();
@@ -160,7 +172,7 @@ public class GuiAssembler implements ActionListener {
 
         switch (actionType) {
             case "HOSTING" -> {
-                actionButton.setText("Host");
+                actionButton[actionIndex].setText(HOST_BUTTON_TEXT);
                 
                 // Adding blank JLabels to make some space 
                 // between the portTextField and the hostButton
@@ -173,7 +185,7 @@ public class GuiAssembler implements ActionListener {
                 rightPane.add(new JLabel(""), rightGbc);
             }
             case "CONNECTING" -> {
-                actionButton.setText("Connect");
+                actionButton[actionIndex].setText(CONNECT_BUTTON_TEXT);
                 
                 JLabel addressLabel = new JLabel("Enter host's IP-address:", JLabel.CENTER);
                 addressLabel.setFont(textLabelFont);
@@ -202,11 +214,11 @@ public class GuiAssembler implements ActionListener {
         
         rightGbc.gridx = 1;
         rightGbc.gridy = 4;
-        rightPane.add(actionButton, rightGbc);
+        rightPane.add(actionButton[actionIndex], rightGbc);
         
         rightGbc.gridx = 2;
         rightGbc.gridy = 4;
-        rightPane.add(disconnectButtton, rightGbc);
+        rightPane.add(disconnectButton[actionIndex], rightGbc);
 
         // Assembling title, leftPane and the rightPane
         JPanel hostPanel = new JPanel(new GridBagLayout());
@@ -237,20 +249,49 @@ public class GuiAssembler implements ActionListener {
         return hostPanel;
     }
 
-    // TODO: organize this thing to readable format
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.paramString());
         
         String command;
         switch (e.getActionCommand()) {
-            case "HOST" -> command = HOST_CARD;
-            case "CONNECT" -> command = CONNECT_CARD;
-            case "Return" -> command = START_CARD;
+            case HOST_NAV_TEXT -> command = HOST_NAV_TEXT;
+            case CONNECT_NAV_TEXT -> command = CONNECT_NAV_TEXT;
+            case HOST_BUTTON_TEXT ->
+            {
+                disconnectButton[0].setEnabled(true);
+                return;
+            }
+            case CONNECT_BUTTON_TEXT ->
+            {
+                String address = addressTextField.getText();
+                if (isAddressValid(address)) {
+                    actionButton[1].setText("Connecting");
+                    disconnectButton[1].setEnabled(true);
+                }
+                else {
+                    addressTextField.setText("Invalid address");
+                }
+                return;
+            }
+            case RETURN_BUTTON_TEXT ->
+            {
+                command = START_NAV_TEXT;
+                updateUi();
+            }
             default -> { return; }
         }
         
         cardLayout.show(cardsPanel, command);
+    }
+
+    private void updateUi() {
+        addressTextField.setText("");
+        portTextField.setText("");
+        actionButton[0].setText(HOST_BUTTON_TEXT);
+        actionButton[1].setText(CONNECT_BUTTON_TEXT);
+        disconnectButton[0].setEnabled(false);
+        disconnectButton[1].setEnabled(false);
     }
 
     private boolean isAddressValid(String address) {

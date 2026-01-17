@@ -7,14 +7,10 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.util.Formatter;
 
 public class GuiAssembler implements ActionListener {
     private final int windowWidth;
     private final int windowHeight;
-
-    private String port;
-    private String address;
 
     // Buttons in the start card
     private final String HOST_NAV_TEXT = "HOST";
@@ -68,23 +64,25 @@ public class GuiAssembler implements ActionListener {
             startCard = createStartPanel();
             hostingCard = createPanel("HOSTING");
             connectingCard = createPanel("CONNECTING");
+
+            cardsPanel.add(hostingCard, HOST_NAV_TEXT);
+            cardsPanel.add(connectingCard, CONNECT_NAV_TEXT);
+            cardsPanel.add(startCard, START_NAV_TEXT);
+            frame.add(cardsPanel, BorderLayout.CENTER);
+
+            frame.setTitle("BATA");
+            frame.setIconImage(getIconImage());
+            frame.setSize(windowWidth, windowHeight);
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+
+            cardLayout.show(cardsPanel, START_NAV_TEXT);
         } catch (IllegalArgumentException e) {
-            System.err.println("IllegalArgumentException in method createPanel: \n"+e.getMessage());
+            System.err.println("IllegalArgumentException in method createPanel.\n" + e.getMessage());
+        } catch (NullPointerException e) {
+            System.err.println("NullPointerException.\n" + e.getMessage());
         }
-
-        cardsPanel.add(hostingCard, HOST_NAV_TEXT);
-        cardsPanel.add(connectingCard, CONNECT_NAV_TEXT);
-        cardsPanel.add(startCard, START_NAV_TEXT);
-        frame.add(cardsPanel, BorderLayout.CENTER);
-
-        frame.setTitle("BATA");
-        frame.setIconImage(getIconImage());
-        frame.setSize(windowWidth, windowHeight);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
-        cardLayout.show(cardsPanel, START_NAV_TEXT);
     }
 
     private JPanel createStartPanel() {
@@ -266,7 +264,6 @@ public class GuiAssembler implements ActionListener {
             {
                 String address = addressTextField.getText();
                 if (isAddressValid(address)) {
-                    actionButton[1].setText("Connecting");
                     disconnectButton[1].setEnabled(true);
                 }
                 else {

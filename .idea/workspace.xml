@@ -10,7 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GuiAssembler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GuiAssembler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

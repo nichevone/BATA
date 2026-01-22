@@ -1,6 +1,5 @@
 // Main swing & awt libraries
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.event.*;
 import java.awt.*;
 // Reading icon
@@ -8,32 +7,12 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
-public class GuiAssembler implements ActionListener {
+public class GuiAssembler implements ActionListener, UiConstants {
     private final int windowWidth;
     private final int windowHeight;
 
-    // Buttons' text on the start card
-    private final String HOST_NAV_TEXT = "HOST";
-    private final String CONNECT_NAV_TEXT = "CONNECT";
-    private final String START_NAV_TEXT = "START";
-    // Buttons' text on the other cards
-    private final String CONNECT_BUTTON_TEXT = "Connect";
-    private final String DISCONNECT_BUTTON_TEXT = "Disconnect";
-    private final String HOST_BUTTON_TEXT = "Host";
-    private final String RETURN_BUTTON_TEXT = "Return";
-
     private final int HOSTING_CARD_INDEX = 0;
     private final int CONNECTING_CARD_INDEX = 1;
-
-    private final Font titleLabelFont = new Font("SansSerif", Font.BOLD, 28);
-    private final Font textLabelFont = new Font("SansSerif", Font.PLAIN, 20);
-    private final Font textAreaFont = new Font("SansSerif", Font.PLAIN, 12);
-    private final Font textFieldFont = new Font("SansSerif", Font.PLAIN, 20);
-    private final Font buttonFont = new Font("SansSerif", Font.ITALIC, 20);
-
-    private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(20, 20, 20, 20);
-    private final Border BOTTOM_BORDER = BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK);
-    private final int BORDER_GAP = 10;
 
     private JFrame frame;
     private JPanel cardsPanel;
@@ -116,12 +95,16 @@ public class GuiAssembler implements ActionListener {
     }
 
     private JPanel createPanel(String actionType) throws IllegalArgumentException {
-        if (!(actionType.equals("HOSTING") || actionType.equals("CONNECTING"))) {
+        int cardIndex;
+        if (actionType.equals("HOSTING")) {
+            cardIndex = HOSTING_CARD_INDEX;
+        }
+        else if (actionType.equals("CONNECTING")) {
+            cardIndex = CONNECTING_CARD_INDEX;
+        }
+        else {
             throw new IllegalArgumentException("actionType is invalid");
         }
-
-        int cardIndex = HOSTING_CARD_INDEX;
-        if (actionType.equals("CONNECTING")) { cardIndex = CONNECTING_CARD_INDEX; }
 
         JLabel titleLabel = new JLabel(actionType, JLabel.CENTER);
         titleLabel.setFont(titleLabelFont);
@@ -262,7 +245,6 @@ public class GuiAssembler implements ActionListener {
             case HOST_BUTTON_TEXT -> host();
             case CONNECT_NAV_TEXT -> command = CONNECT_NAV_TEXT;
             case CONNECT_BUTTON_TEXT -> connect();
-            case DISCONNECT_BUTTON_TEXT -> updateUi();
             case RETURN_BUTTON_TEXT ->
             {
                 command = START_NAV_TEXT;
@@ -275,15 +257,15 @@ public class GuiAssembler implements ActionListener {
     }
 
     private void host() {
-        String port = portTextField[0].getText();
+        String port = portTextField[HOSTING_CARD_INDEX].getText();
         System.out.println(port);
-        disconnectButton[0].setEnabled(true);
+        disconnectButton[HOSTING_CARD_INDEX].setEnabled(true);
     }
 
     private void connect() {
         String address = addressTextField.getText();
         if (isAddressValid(address)) {
-            disconnectButton[1].setEnabled(true);
+            disconnectButton[CONNECTING_CARD_INDEX].setEnabled(true);
             System.out.println(address);
         }
         else {

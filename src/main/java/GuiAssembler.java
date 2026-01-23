@@ -245,6 +245,11 @@ public class GuiAssembler implements ActionListener, UiConstants {
             case HOST_BUTTON_TEXT -> host();
             case CONNECT_NAV_TEXT -> command = CONNECT_NAV_TEXT;
             case CONNECT_BUTTON_TEXT -> connect();
+            case DISCONNECT_BUTTON_TEXT ->
+            {
+                disconnectButton[HOSTING_CARD_INDEX].setEnabled(false);
+                disconnectButton[CONNECTING_CARD_INDEX].setEnabled(false);
+            }
             case RETURN_BUTTON_TEXT ->
             {
                 command = START_NAV_TEXT;

@@ -300,7 +300,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
     }
 
     private boolean isPortValid(String port) {
-        return !port.isEmpty();
+        return !port.isBlank();
     }
 
     private boolean isAddressValid(String address) {

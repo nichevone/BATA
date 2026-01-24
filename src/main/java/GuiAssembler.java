@@ -1,8 +1,7 @@
-// Main swing & awt libraries
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
-// Reading icon
+// Libraries for reading the icon
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
@@ -37,10 +36,9 @@ public class GuiAssembler implements ActionListener, UiConstants {
     public GuiAssembler(int windowWidth, int windowHeight) {
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
-        initUI();
     }
 
-    private void initUI() {
+    public void initUI() {
         frame = new JFrame();
         cardLayout = new CardLayout();
         cardsPanel = new JPanel(cardLayout);
@@ -249,6 +247,9 @@ public class GuiAssembler implements ActionListener, UiConstants {
             {
                 disconnectButton[HOSTING_CARD_INDEX].setEnabled(false);
                 disconnectButton[CONNECTING_CARD_INDEX].setEnabled(false);
+                
+                actionButton[HOSTING_CARD_INDEX].setEnabled(true);
+                actionButton[CONNECTING_CARD_INDEX].setEnabled(true);
             }
             case RETURN_BUTTON_TEXT ->
             {
@@ -263,15 +264,22 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
     private void host() {
         String port = portTextField[HOSTING_CARD_INDEX].getText();
-        System.out.println(port);
-        disconnectButton[HOSTING_CARD_INDEX].setEnabled(true);
+        
+        if (isPortValid(port)) {
+            System.out.println(port);
+            disconnectButton[HOSTING_CARD_INDEX].setEnabled(true);
+            actionButton[HOSTING_CARD_INDEX].setEnabled(false);
+        }
     }
 
     private void connect() {
         String address = addressTextField.getText();
-        if (isAddressValid(address)) {
+        String port = portTextField[CONNECTING_CARD_INDEX].getText();
+        
+        if (isAddressValid(address) && isPortValid(port)) {
+            System.out.println(port+"\n"+address);
             disconnectButton[CONNECTING_CARD_INDEX].setEnabled(true);
-            System.out.println(address);
+            actionButton[CONNECTING_CARD_INDEX].setEnabled(false);
         }
         else {
             addressTextField.setText("Invalid address");
@@ -291,6 +299,10 @@ public class GuiAssembler implements ActionListener, UiConstants {
         disconnectButton[CONNECTING_CARD_INDEX].setEnabled(false);
     }
 
+    private boolean isPortValid(String port) {
+        return !port.isEmpty();
+    }
+
     private boolean isAddressValid(String address) {
         // Matches IP-address
         return address.matches(
@@ -305,13 +317,5 @@ public class GuiAssembler implements ActionListener, UiConstants {
             System.err.println("Error reading icon image.\n"+e.getMessage());
             return null;
         }
-    }
-
-    public static void main(String[] args) {
-        int width = 600, height = 400;
-
-        EventQueue.invokeLater(() -> {
-            GuiAssembler gui = new GuiAssembler(width, height);
-        });
     }
 }

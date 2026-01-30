@@ -11,12 +11,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ConnectionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GuiAssembler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GuiAssembler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ConnectionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Receiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Sender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UiConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UiConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/VoiceChat_jar/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/VoiceChat_jar/VoiceChat.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ConnectionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ConnectionController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,42 +43,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Application.AudioLoopback.executor": "Run",
-    "Application.AudioReceiver.executor": "Run",
-    "Application.AudioSender.executor": "Run",
-    "Application.GUI.executor": "Run",
-    "Application.GuiAssembler.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Application.Server.executor": "Run",
-    "Application.TestClient.executor": "Run",
-    "Application.TextChat.executor": "Run",
-    "Application.VoiceChat.executor": "Run",
-    "Maven.VoiceChat [clean].executor": "Run",
-    "Maven.VoiceChat [compile].executor": "Run",
-    "Maven.VoiceChat [install].executor": "Run",
-    "Maven.VoiceChat [package].executor": "Run",
-    "Maven.VoiceChat [test].executor": "Run",
-    "Maven.VoiceChat [validate].executor": "Run",
-    "Maven.VoiceChat [verify].executor": "Run",
-    "Maven.voice-chat [clean].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/user/Desktop/Java/VoiceChat",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "Errors"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Application.AudioLoopback.executor&quot;: &quot;Run&quot;,
+    &quot;Application.AudioReceiver.executor&quot;: &quot;Run&quot;,
+    &quot;Application.AudioSender.executor&quot;: &quot;Run&quot;,
+    &quot;Application.GUI.executor&quot;: &quot;Run&quot;,
+    &quot;Application.GuiAssembler.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TestClient.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TextChat.executor&quot;: &quot;Run&quot;,
+    &quot;Application.VoiceChat.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.VoiceChat [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.VoiceChat [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.VoiceChat [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.VoiceChat [package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.VoiceChat [test].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.VoiceChat [validate].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.VoiceChat [verify].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.voice-chat [clean].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/Desktop/Java/VoiceChat&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\user\Desktop\Java\VoiceChat\src\temporary" />

@@ -1,4 +1,6 @@
-import java.awt.*;
+import java.awt.EventQueue;
+
+// TODO: output information into the textArea
 
 public class ConnectionController {
     private final ConnectionHandler handler = new ConnectionHandler();

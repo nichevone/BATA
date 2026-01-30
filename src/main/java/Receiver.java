@@ -15,6 +15,10 @@ public class Receiver {
     private InetAddress senderAddress = null;
     private volatile boolean isOpened = true;
 
+    public boolean isOpened() {
+        return isOpened;
+    }
+
     public void close() {
         isOpened = false;
     }
@@ -24,6 +28,9 @@ public class Receiver {
     }
 
     public void receive(int port) {
+        // Reset isOpened state
+        isOpened = true;
+
         try (DatagramSocket socket = new DatagramSocket(port)) {
             System.out.println("R: Socket is listening on port: " + port);
 
@@ -41,7 +48,13 @@ public class Receiver {
 
             // Receive first packet to establish connection
             System.out.println("R: Waiting for first packet...");
+            // TODO: socket already in use if disconnecting while waiting for the packet
             socket.receive(receivePacket);
+
+            // Checking if connection was closed before first packet arrived
+            if (!isOpened) {
+                return;
+            }
 
             // Sender information
             senderAddress = receivePacket.getAddress();
@@ -60,6 +73,7 @@ public class Receiver {
 
             speaker.stop();
             speaker.close();
+            //senderAddress = null;
             System.out.println("R: Closed receive socket");
 
         } catch (SocketException e) {

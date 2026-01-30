@@ -11,8 +11,12 @@
   <component name="ChangeListManager">
     <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ConnectionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GuiAssembler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GuiAssembler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ConnectionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Receiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Sender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UiConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UiConstants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,9 +29,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -54,6 +58,7 @@
     "Application.Server.executor": "Run",
     "Application.TestClient.executor": "Run",
     "Application.TextChat.executor": "Run",
+    "Application.VoiceChat.executor": "Run",
     "Maven.VoiceChat [clean].executor": "Run",
     "Maven.VoiceChat [compile].executor": "Run",
     "Maven.VoiceChat [install].executor": "Run",
@@ -89,18 +94,18 @@
       <recent name="C:\Users\user\Desktop\Java\VoiceChat\src\test\testClasses" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="GuiAssembler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../../../../../Program Files/Java/jdk-25" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="MAIN_CLASS_NAME" value="GuiAssembler" />
+  <component name="RunManager">
+    <configuration name="ConnectionController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ConnectionController" />
       <module name="VoiceChat" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
+    <configuration name="GuiAssembler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../../../../../Program Files/Java/jdk-25" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="GuiAssembler" />
       <module name="VoiceChat" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -143,11 +148,11 @@
     </configuration>
     <list>
       <item itemvalue="Application.GuiAssembler" />
-      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.ConnectionController" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.ConnectionController" />
         <item itemvalue="Application.GuiAssembler" />
       </list>
     </recent_temporary>
@@ -161,5 +166,15 @@
       <updated>1759494441788</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.StackOverflowError" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

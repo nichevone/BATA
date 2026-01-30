@@ -10,8 +10,13 @@ public class GuiAssembler implements ActionListener, UiConstants {
     private final int windowWidth;
     private final int windowHeight;
 
+    private ConnectionController controller;
+
     private final int HOSTING_CARD_INDEX = 0;
     private final int CONNECTING_CARD_INDEX = 1;
+    private String currentCard;
+    private int port;
+    private String address;
 
     private JFrame frame;
     private JPanel cardsPanel;
@@ -114,6 +119,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         infoTextArea[cardIndex].setFont(textAreaFont);
 
         JScrollPane scrollPane = new JScrollPane(infoTextArea[cardIndex]);
+        scrollPane.setBorder(TITLED_BORDER);
         leftPane.add(scrollPane);
 
         // Right part - port input and the button
@@ -243,22 +249,17 @@ public class GuiAssembler implements ActionListener, UiConstants {
             case HOST_BUTTON_TEXT -> host();
             case CONNECT_NAV_TEXT -> command = CONNECT_NAV_TEXT;
             case CONNECT_BUTTON_TEXT -> connect();
-            case DISCONNECT_BUTTON_TEXT ->
-            {
-                disconnectButton[HOSTING_CARD_INDEX].setEnabled(false);
-                disconnectButton[CONNECTING_CARD_INDEX].setEnabled(false);
-                
-                actionButton[HOSTING_CARD_INDEX].setEnabled(true);
-                actionButton[CONNECTING_CARD_INDEX].setEnabled(true);
-            }
+            case DISCONNECT_BUTTON_TEXT -> disconnect();
             case RETURN_BUTTON_TEXT ->
             {
                 command = START_NAV_TEXT;
                 updateUi();
+                disconnect();
             }
             default -> { return; }
         }
-        
+
+        currentCard = command;
         cardLayout.show(cardsPanel, command);
     }
 
@@ -269,6 +270,9 @@ public class GuiAssembler implements ActionListener, UiConstants {
             System.out.println(port);
             disconnectButton[HOSTING_CARD_INDEX].setEnabled(true);
             actionButton[HOSTING_CARD_INDEX].setEnabled(false);
+
+            this.port = Integer.parseInt(port);
+            controller.initiateConnection();
         }
     }
 
@@ -280,10 +284,24 @@ public class GuiAssembler implements ActionListener, UiConstants {
             System.out.println(port+"\n"+address);
             disconnectButton[CONNECTING_CARD_INDEX].setEnabled(true);
             actionButton[CONNECTING_CARD_INDEX].setEnabled(false);
+
+            this.port = Integer.parseInt(port);
+            this.address = address;
+            controller.initiateConnection();
         }
         else {
             addressTextField.setText("Invalid address");
         }
+    }
+
+    private void disconnect() {
+        disconnectButton[HOSTING_CARD_INDEX].setEnabled(false);
+        disconnectButton[CONNECTING_CARD_INDEX].setEnabled(false);
+
+        actionButton[HOSTING_CARD_INDEX].setEnabled(true);
+        actionButton[CONNECTING_CARD_INDEX].setEnabled(true);
+
+        controller.initiateDisconnection();
     }
 
     private void updateUi() {
@@ -300,7 +318,12 @@ public class GuiAssembler implements ActionListener, UiConstants {
     }
 
     private boolean isPortValid(String port) {
-        return !port.isBlank();
+        try {
+            Integer.parseInt(port);
+            return true; // If parsing was successful
+        } catch (NumberFormatException e) {
+            return false; // If parsing fails
+        }
     }
 
     private boolean isAddressValid(String address) {
@@ -317,5 +340,19 @@ public class GuiAssembler implements ActionListener, UiConstants {
             System.err.println("Error reading icon image.\n"+e.getMessage());
             return null;
         }
+    }
+
+    public boolean isCurrentCardHosting() {
+        return currentCard.equals(HOST_NAV_TEXT);
+    }
+    public int getPort() {
+        return port;
+    }
+    public String getAddress() {
+        return address;
+    }
+
+    public void setController(ConnectionController controller) {
+        this.controller = controller;
     }
 }

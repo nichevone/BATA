@@ -22,5 +22,7 @@ public interface UiConstants {
 
     Border EMPTY_BORDER = BorderFactory.createEmptyBorder(20, 20, 20, 20);
     Border BOTTOM_BORDER = BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK);
+    // Used for the text area in the left pane
+    Border TITLED_BORDER = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Output information");
     int BORDER_GAP = 10;
 }

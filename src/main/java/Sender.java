@@ -14,11 +14,18 @@ public class Sender {
     );
     private volatile boolean isOpened = true;
 
+    public boolean isOpened() {
+        return isOpened;
+    }
+
     public void close() {
         isOpened = false;
     }
 
     public void send(int port, InetAddress receiverAddress) {
+        // Reset isOpened state
+        isOpened = true;
+
         try (DatagramSocket socket = new DatagramSocket()) {
             System.out.println("S: Socket for sending created successfully");
 

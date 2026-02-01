@@ -6,6 +6,9 @@
         <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/VoiceChat_jar/META-INF/MANIFEST.MF" />
       </element>
       <element id="module-output" name="VoiceChat" />
+      <element id="directory" name="resources">
+        <element id="dir-copy" path="$PROJECT_DIR$/src/main/resources" />
+      </element>
     </root>
   </artifact>
 </component>

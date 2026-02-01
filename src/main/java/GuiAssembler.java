@@ -1,16 +1,13 @@
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
-// Libraries for reading the icon
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
 
 public class GuiAssembler implements ActionListener, UiConstants {
     private final int windowWidth;
     private final int windowHeight;
 
     private ConnectionController controller;
+    private final GuiHelper guiHelper = new GuiHelper();
 
     private final int HOSTING_CARD_INDEX = 0;
     private final int CONNECTING_CARD_INDEX = 1;
@@ -59,7 +56,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
             frame.add(cardsPanel, BorderLayout.CENTER);
 
             frame.setTitle("BATA");
-            frame.setIconImage(getIconImage());
+            frame.setIconImage(guiHelper.getIconImage());
             frame.setSize(windowWidth, windowHeight);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,7 +64,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
             cardLayout.show(cardsPanel, START_NAV_TEXT);
         } catch (IllegalArgumentException e) {
-            System.err.println("IllegalArgumentException in method createPanel.\n" + e.getMessage());
+            System.err.println("IllegalArgumentException:\n" + e.getMessage());
         } catch (NullPointerException e) {
             System.err.println("NullPointerException.\n" + e.getMessage());
         }
@@ -266,8 +263,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
     private void host() {
         String port = portTextField[HOSTING_CARD_INDEX].getText();
         
-        if (isPortValid(port)) {
-            System.out.println(port);
+        if (guiHelper.isPortValid(port)) {
             disconnectButton[HOSTING_CARD_INDEX].setEnabled(true);
             actionButton[HOSTING_CARD_INDEX].setEnabled(false);
 
@@ -280,8 +276,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         String address = addressTextField.getText();
         String port = portTextField[CONNECTING_CARD_INDEX].getText();
         
-        if (isAddressValid(address) && isPortValid(port)) {
-            System.out.println(port+"\n"+address);
+        if (guiHelper.isAddressValid(address) && guiHelper.isPortValid(port)) {
             disconnectButton[CONNECTING_CARD_INDEX].setEnabled(true);
             actionButton[CONNECTING_CARD_INDEX].setEnabled(false);
 
@@ -317,30 +312,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         disconnectButton[CONNECTING_CARD_INDEX].setEnabled(false);
     }
 
-    private boolean isPortValid(String port) {
-        try {
-            Integer.parseInt(port);
-            return true; // If parsing was successful
-        } catch (NumberFormatException e) {
-            return false; // If parsing fails
-        }
-    }
 
-    private boolean isAddressValid(String address) {
-        // Matches IP-address
-        return address.matches(
-                "^((25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d?\\d)$"
-        );
-    }
-
-    private Image getIconImage() {
-        try {
-            return ImageIO.read(new File("src/main/resources/icon.png"));
-        } catch (IOException e) {
-            System.err.println("Error reading icon image.\n"+e.getMessage());
-            return null;
-        }
-    }
 
     public boolean isCurrentCardHosting() {
         return currentCard.equals(HOST_NAV_TEXT);

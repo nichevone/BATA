@@ -1,9 +1,8 @@
 import javax.imageio.ImageIO;
 import java.awt.Image;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
+import java.io.IOException;
 
 public class GuiHelper {
     public boolean isPortValid(String port) {

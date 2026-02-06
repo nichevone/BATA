@@ -14,10 +14,6 @@ public class Sender {
     );
     private volatile boolean isOpened = true;
 
-    public boolean isOpened() {
-        return isOpened;
-    }
-
     public void close() {
         isOpened = false;
     }

@@ -24,6 +24,7 @@ public class ConnectionController {
 
     public void initiateDisconnection() {
         handler.disconnect();
+        gui.setAddress(null);
     }
 
     public int getPort() {

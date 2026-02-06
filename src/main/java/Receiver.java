@@ -48,13 +48,7 @@ public class Receiver {
 
             // Receive first packet to establish connection
             System.out.println("R: Waiting for first packet...");
-            // TODO: socket already in use if disconnecting while waiting for the packet
             socket.receive(receivePacket);
-
-            // Checking if connection was closed before first packet arrived
-            if (!isOpened) {
-                return;
-            }
 
             // Sender information
             senderAddress = receivePacket.getAddress();
@@ -73,11 +67,12 @@ public class Receiver {
 
             speaker.stop();
             speaker.close();
-            //senderAddress = null;
+            senderAddress = null;
             System.out.println("R: Closed receive socket");
 
         } catch (SocketException e) {
             System.err.println("SocketException while receiving.\n" + e.getMessage());
+            Thread.currentThread().interrupt();
         } catch (LineUnavailableException e) {
             System.err.println("LineUnavailableException while receiving.\n" + e.getMessage());
         } catch (IOException e) {

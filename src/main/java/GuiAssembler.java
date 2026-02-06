@@ -11,6 +11,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
     private final int HOSTING_CARD_INDEX = 0;
     private final int CONNECTING_CARD_INDEX = 1;
+
     private String currentCard;
     private int port;
     private String address;
@@ -262,31 +263,38 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
     private void host() {
         String port = portTextField[HOSTING_CARD_INDEX].getText();
-        
-        if (guiHelper.isPortValid(port)) {
-            disconnectButton[HOSTING_CARD_INDEX].setEnabled(true);
-            actionButton[HOSTING_CARD_INDEX].setEnabled(false);
 
-            this.port = Integer.parseInt(port);
-            controller.initiateConnection();
+        if (!guiHelper.isPortValid(port)) {
+            portTextField[HOSTING_CARD_INDEX].setText("Invalid port.");
+            return;
         }
+
+        disconnectButton[HOSTING_CARD_INDEX].setEnabled(true);
+        actionButton[HOSTING_CARD_INDEX].setEnabled(false);
+
+        this.port = Integer.parseInt(port);
+        controller.initiateConnection();
     }
 
     private void connect() {
         String address = addressTextField.getText();
         String port = portTextField[CONNECTING_CARD_INDEX].getText();
         
-        if (guiHelper.isAddressValid(address) && guiHelper.isPortValid(port)) {
-            disconnectButton[CONNECTING_CARD_INDEX].setEnabled(true);
-            actionButton[CONNECTING_CARD_INDEX].setEnabled(false);
-
-            this.port = Integer.parseInt(port);
-            this.address = address;
-            controller.initiateConnection();
-        }
-        else {
+        if (!guiHelper.isAddressValid(address)) {
             addressTextField.setText("Invalid address");
+            return;
         }
+        if (!guiHelper.isPortValid(port)) {
+            portTextField[CONNECTING_CARD_INDEX].setText("Invalid port.");
+            return;
+        }
+
+        disconnectButton[CONNECTING_CARD_INDEX].setEnabled(true);
+        actionButton[CONNECTING_CARD_INDEX].setEnabled(false);
+
+        this.port = Integer.parseInt(port);
+        this.address = address;
+        controller.initiateConnection();
     }
 
     private void disconnect() {
@@ -322,6 +330,9 @@ public class GuiAssembler implements ActionListener, UiConstants {
     }
     public String getAddress() {
         return address;
+    }
+    public void setAddress(String value) {
+        address = value;
     }
 
     public void setController(ConnectionController controller) {

@@ -5,7 +5,6 @@ import java.net.UnknownHostException;
 import java.util.InputMismatchException;
 
 public class ConnectionHandler {
-    private static final Scanner sc = new Scanner(System.in);
     private final Receiver receiver = new Receiver();
     private final Sender sender = new Sender();
 

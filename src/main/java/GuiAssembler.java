@@ -114,6 +114,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         // Left part - text Area
         JPanel leftPane = new JPanel(new BorderLayout());
         infoTextArea[cardIndex] = new JTextArea();
+        infoTextArea[cardIndex].setLineWrap(true);
         infoTextArea[cardIndex].setFont(textAreaFont);
 
         JScrollPane scrollPane = new JScrollPane(infoTextArea[cardIndex]);
@@ -225,7 +226,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         hostGbc.gridx = 0;
         hostGbc.gridy = 1;
         hostGbc.gridwidth = 1;
-        hostGbc.weightx = 4;
+        hostGbc.weightx = 10;
         hostGbc.weighty = 1;
         hostPanel.add(leftPane, hostGbc);
 
@@ -239,25 +240,33 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.paramString());
-        
-        String command = "";
-        switch (e.getActionCommand()) {
-            case HOST_NAV_TEXT -> command = HOST_NAV_TEXT;
+        String command = e.getActionCommand();
+        switch (command) {
+            case HOST_NAV_TEXT ->
+            {
+                infoTextArea[HOSTING_CARD_INDEX].setText("");
+                currentCard = HOST_NAV_TEXT;
+                command = HOST_NAV_TEXT;
+            }
+
+            case CONNECT_NAV_TEXT ->
+            {
+                infoTextArea[CONNECTING_CARD_INDEX].setText("");
+                currentCard = CONNECT_NAV_TEXT;
+                command = CONNECT_NAV_TEXT;
+            }
             case HOST_BUTTON_TEXT -> host();
-            case CONNECT_NAV_TEXT -> command = CONNECT_NAV_TEXT;
             case CONNECT_BUTTON_TEXT -> connect();
             case DISCONNECT_BUTTON_TEXT -> disconnect();
             case RETURN_BUTTON_TEXT ->
             {
                 command = START_NAV_TEXT;
-                updateUi();
                 disconnect();
+                updateUi();
             }
             default -> { return; }
         }
 
-        currentCard = command;
         cardLayout.show(cardsPanel, command);
     }
 
@@ -308,16 +317,26 @@ public class GuiAssembler implements ActionListener, UiConstants {
     }
 
     private void updateUi() {
-        if (addressTextField != null) { addressTextField.setText(""); }
+        if (addressTextField != null) {
+            addressTextField.setText("");
+        }
 
         portTextField[HOSTING_CARD_INDEX].setText("");
         portTextField[CONNECTING_CARD_INDEX].setText("");
 
-        infoTextArea[HOSTING_CARD_INDEX].setText("");
-        infoTextArea[CONNECTING_CARD_INDEX].setText("");
+        controller.cleanInfoArea();
 
         disconnectButton[HOSTING_CARD_INDEX].setEnabled(false);
         disconnectButton[CONNECTING_CARD_INDEX].setEnabled(false);
+    }
+
+    void setInfoAreaText(StringBuffer info) {
+        if (isCurrentCardHosting()) {
+            infoTextArea[HOSTING_CARD_INDEX].setText(info.toString());
+        }
+        else {
+            infoTextArea[CONNECTING_CARD_INDEX].setText(info.toString());
+        }
     }
 
 

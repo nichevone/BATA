@@ -3,7 +3,7 @@ import java.net.*;
 
 import java.io.IOException;
 
-public class Sender {
+public class Sender implements Loggable {
     final int BUFFER_SIZE = 1024;
     final AudioFormat format = new AudioFormat(
             8000.0f, // Sample rate,
@@ -12,25 +12,23 @@ public class Sender {
             true, // Signed
             false // Little endian
     );
-    private volatile boolean isOpened = true;
 
-    public void close() {
-        isOpened = false;
-    }
+    private InfoLogger logger;
+    private volatile boolean isOpened = true;
 
     public void send(int port, InetAddress receiverAddress) {
         // Reset isOpened state
         isOpened = true;
 
         try (DatagramSocket socket = new DatagramSocket()) {
-            System.out.println("S: Socket for sending created successfully");
+            log(senderType, "Socket for sending created");
 
             // Setting microphone
             DataLine.Info micInfo = new DataLine.Info(TargetDataLine.class, format);
             TargetDataLine microphone = (TargetDataLine) AudioSystem.getLine(micInfo);
 
             // Receiver information
-            System.out.println("S: Socket is sending data to address: " + receiverAddress);
+            log(senderType, "Sending to address:\n" + receiverAddress);
 
             // Buffer var. for receiving audio
             byte[] buffer = new byte[BUFFER_SIZE];
@@ -43,7 +41,7 @@ public class Sender {
             microphone.open(format);
             microphone.start();
 
-            System.out.println("S: Sending is started");
+            log(senderType, "Sending is started");
 
             while (isOpened) {
                 int bytesRead = microphone.read(buffer, 0, BUFFER_SIZE);
@@ -54,14 +52,27 @@ public class Sender {
 
             microphone.stop();
             microphone.close();
-            System.out.println("S: Closed send socket");
+            log(senderType, "Closed send socket");
 
         } catch (SocketException e) {
-            System.err.println("SocketException while sending.\n" + e.getMessage());
+            log(exceptType, "SocketException:\n" + e.getMessage());
         } catch (LineUnavailableException e) {
-            System.err.println("LineUnavailableException while sending.\n" + e.getMessage());
+            log(exceptType, "LineUnavailableException:\n" + e.getMessage());
         } catch (IOException e) {
-            System.err.println("IOException while sending.\n" + e.getMessage());
+            log(exceptType, "IOException:\n" + e.getMessage());
         }
+    }
+    
+    public void close() {
+        isOpened = false;
+    }
+
+    @Override
+    public void log(char type, String message) {
+        logger.log(type, message);
+    }
+    @Override
+    public void setLogger(InfoLogger logger) {
+        this.logger = logger;
     }
 }

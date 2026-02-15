@@ -1,12 +1,10 @@
 import java.net.InetAddress;
-import java.util.Scanner;
-
 import java.net.UnknownHostException;
-import java.util.InputMismatchException;
 
-public class ConnectionHandler {
+public class ConnectionHandler implements Loggable {
     private final Receiver receiver = new Receiver();
     private final Sender sender = new Sender();
+    private InfoLogger logger;
 
     private Thread receiverThread;
     private Thread senderThread;
@@ -27,7 +25,6 @@ public class ConnectionHandler {
                 }
                 Thread.sleep(1000);
             }
-            System.out.println();
 
             // Start thread for sending
             senderThread = new Thread(() -> {
@@ -36,7 +33,7 @@ public class ConnectionHandler {
             senderThread.start();
 
         } catch (InterruptedException e) {
-            System.err.println("InterruptedException in main. Thread got interrupted while waiting for sender address.\n" + e.getMessage());
+            log(exceptType, "InterruptedException in main. Thread got interrupted while waiting for sender address.\n" + e.getMessage());
         }
     }
 
@@ -57,12 +54,12 @@ public class ConnectionHandler {
             receiverThread.start();
 
         } catch (UnknownHostException e) {
-            System.err.println("UnknownHostException in main. Host's IP-address is unknown.\n" + e.getMessage());
+            log(exceptType, "UnknownHostException in main. Host's IP-address is unknown.\n" + e.getMessage());
         }
     }
 
     public void disconnect() {
-        System.out.println("Closing sockets...");
+        log(handlerType, "Closing sockets...");
         sender.close();
         receiver.close();
 
@@ -76,4 +73,16 @@ public class ConnectionHandler {
         }
     }
 
+    @Override
+    public void log(char type, String message) {
+        logger.log(type, message);
+    }
+    @Override
+    public void setLogger(InfoLogger logger) {
+        // Get logger instance from controller
+        this.logger = logger;
+        // Set logger instance to sender and receiver
+        sender.setLogger(logger);
+        receiver.setLogger(logger);
+    }
 }

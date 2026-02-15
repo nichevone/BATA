@@ -3,7 +3,7 @@ import java.net.*;
 
 import java.io.IOException;
 
-public class Receiver {
+public class Receiver implements Loggable {
     final int BUFFER_SIZE = 1024;
     final AudioFormat format = new AudioFormat(
             8000.0f, // Sample rate,
@@ -12,27 +12,17 @@ public class Receiver {
             true, // Signed
             false // Little endian
     );
+
+    private InfoLogger logger;
     private InetAddress senderAddress = null;
     private volatile boolean isOpened = true;
-
-    public boolean isOpened() {
-        return isOpened;
-    }
-
-    public void close() {
-        isOpened = false;
-    }
-
-    public InetAddress getSenderAddress() {
-        return senderAddress;
-    }
 
     public void receive(int port) {
         // Reset isOpened state
         isOpened = true;
 
         try (DatagramSocket socket = new DatagramSocket(port)) {
-            System.out.println("R: Socket is listening on port: " + port);
+            log(receiverType, "Socket for receiving's on port: " + port);
 
             // Setting speakers
             DataLine.Info speakerInfo = new DataLine.Info(SourceDataLine.class, format);
@@ -44,21 +34,21 @@ public class Receiver {
                     buffer, 0, BUFFER_SIZE
             );
 
-            System.out.println("R: Your IP-address: " + InetAddress.getLocalHost());
+            log(receiverType, "Your IP-address:\n" + InetAddress.getLocalHost().getHostAddress());
 
             // Receive first packet to establish connection
-            System.out.println("R: Waiting for first packet...");
+            log(receiverType, "Waiting for first packet...");
             socket.receive(receivePacket);
 
             // Sender information
             senderAddress = receivePacket.getAddress();
-            System.out.println("R: Receiving data from: " + senderAddress);
+            log(receiverType, "Receiving from: " + senderAddress);
 
             // Starting speakers
             speaker.open(format);
             speaker.start();
 
-            System.out.println("R: Receiving is started");
+            log(receiverType, "Receiving is started");
 
             while (isOpened) {
                 socket.receive(receivePacket);
@@ -68,16 +58,34 @@ public class Receiver {
             speaker.stop();
             speaker.close();
             senderAddress = null;
-            System.out.println("R: Closed receive socket");
+            log(receiverType, "Closed receive socket");
 
         } catch (SocketException e) {
-            System.err.println("SocketException while receiving.\n" + e.getMessage());
+            log(exceptType, "SocketException:\n" + e.getMessage());
             Thread.currentThread().interrupt();
         } catch (LineUnavailableException e) {
-            System.err.println("LineUnavailableException while receiving.\n" + e.getMessage());
+            log(exceptType, "LineUnavailableException:\n" + e.getMessage());
         } catch (IOException e) {
-            System.err.println("IOException while receiving.\n" + e.getMessage());
+            log(exceptType, "IOException:\n" + e.getMessage());
         }
     }
 
+    public boolean isOpened() {
+        return isOpened;
+    }
+    public void close() {
+        isOpened = false;
+    }
+    public InetAddress getSenderAddress() {
+        return senderAddress;
+    }
+
+    @Override
+    public void log(char type, String message) {
+        logger.log(type, message);
+    }
+    @Override
+    public void setLogger(InfoLogger logger) {
+        this.logger = logger;
+    }
 }

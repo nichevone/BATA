@@ -42,7 +42,7 @@ public class Receiver implements Loggable {
 
             // Sender information
             senderAddress = receivePacket.getAddress();
-            log(receiverType, "Receiving from: " + senderAddress);
+            log(receiverType, "Receiving from:\n" + senderAddress);
 
             // Starting speakers
             speaker.open(format);

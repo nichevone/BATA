@@ -9,12 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="Jar built">
+    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="Icon redesign / jar rebuild">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VoiceChat_jar/VoiceChat_0.1-alpha.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VoiceChat_jar/VoiceChat_0.2-alpha.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/design.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Receiver.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +69,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/Desktop/Java/VoiceChat&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/Desktop/Java/VoiceChat/out/artifacts/VoiceChat_jar/META-INF&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -82,14 +79,15 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\user\Desktop\Java\VoiceChat\out\artifacts\VoiceChat_jar\META-INF" />
       <recent name="C:\Users\user\Desktop\Java\VoiceChat\src\temporary" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\user\Desktop\Java\VoiceChat\out\artifacts\VoiceChat_jar" />
       <recent name="C:\Users\user\Desktop\Java\VoiceChat" />
       <recent name="C:\Users\user\Desktop\Java\VoiceChat\src\main" />
       <recent name="C:\Users\user\Desktop\Java\VoiceChat\src" />
       <recent name="C:\Users\user\Desktop\Java\VoiceChat\src\main\libs" />
-      <recent name="C:\Users\user\Desktop\Java\VoiceChat\src\test\testClasses" />
     </key>
   </component>
   <component name="RunManager">
@@ -145,12 +143,21 @@
       <option name="project" value="LOCAL" />
       <updated>1771134515318</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Icon redesign / jar rebuild">
+      <option name="closed" value="true" />
+      <created>1771135313468</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1771135313468</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Jar built" />
-    <option name="LAST_COMMIT_MESSAGE" value="Jar built" />
+    <MESSAGE value="Icon redesign / jar rebuild" />
+    <option name="LAST_COMMIT_MESSAGE" value="Icon redesign / jar rebuild" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

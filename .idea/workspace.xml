@@ -9,8 +9,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="jars rename">
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VoiceChat_jar/VoiceChat_v1.0-beta.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VoiceChat_jar/VoiceChat_v1.0.0-beta.jar" afterDir="false" />
+    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="Merge branch 'master' of https://github.com/nichevone/BATA&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/artifacts/VoiceChat_jar/VoiceChat_1.0-beta.jar&#10;#&#9;out/artifacts/VoiceChat_jar/VoiceChat_v1.0-beta.jar&#10;#&#9;out/artifacts/VoiceChat_jar/VoiceChat_v1.0.0-beta.jar">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

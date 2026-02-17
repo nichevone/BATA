@@ -12,9 +12,8 @@ public class ConnectionHandler implements Loggable {
     public void host(int port) {
         try {
             // Start thread for receiving
-            receiverThread = new Thread(() -> {
-                receiver.receive(port);
-            }, "host-receiver");
+            receiverThread = new Thread(() ->
+                    receiver.receive(port), "host-receiver");
             receiverThread.start();
 
             // TODO: make this not busy-waiting
@@ -27,9 +26,8 @@ public class ConnectionHandler implements Loggable {
             }
 
             // Start thread for sending
-            senderThread = new Thread(() -> {
-                sender.send(port, receiver.getSenderAddress());
-            }, "host-sender");
+            senderThread = new Thread(() ->
+                sender.send(port, receiver.getSenderAddress()), "host-sender");
             senderThread.start();
 
         } catch (InterruptedException e) {
@@ -42,15 +40,13 @@ public class ConnectionHandler implements Loggable {
             InetAddress receiverAddress = InetAddress.getByName(address);
 
             // Start thread for sending
-            senderThread = new Thread(() -> {
-                sender.send(port, receiverAddress);
-            }, "connect-sender");
+            senderThread = new Thread(() ->
+                sender.send(port, receiverAddress), "connect-sender");
             senderThread.start();
 
             // Start thread for receiving
-            receiverThread = new Thread(() -> {
-                receiver.receive(port);
-            }, "connect-receiver");
+            receiverThread = new Thread(() ->
+                receiver.receive(port), "connect-receiver");
             receiverThread.start();
 
         } catch (UnknownHostException e) {

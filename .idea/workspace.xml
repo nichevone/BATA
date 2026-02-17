@@ -9,9 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="Merge branch 'master' of https://github.com/nichevone/BATA&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/artifacts/VoiceChat_jar/VoiceChat_1.0-beta.jar&#10;#&#9;out/artifacts/VoiceChat_jar/VoiceChat_v1.0-beta.jar&#10;#&#9;out/artifacts/VoiceChat_jar/VoiceChat_v1.0.0-beta.jar">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="Updated README.md" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -177,7 +175,23 @@
       <option name="project" value="LOCAL" />
       <updated>1771328258101</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Created LICENSE">
+      <option name="closed" value="true" />
+      <created>1771329881393</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1771329881393</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Updated README.md">
+      <option name="closed" value="true" />
+      <created>1771331715879</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1771331715879</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -186,7 +200,9 @@
     <MESSAGE value="Not logging excepts now, fixed icon loading" />
     <MESSAGE value="Little threads refactoring" />
     <MESSAGE value="jars rename" />
-    <option name="LAST_COMMIT_MESSAGE" value="jars rename" />
+    <MESSAGE value="Created LICENSE" />
+    <MESSAGE value="Updated README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated README.md" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

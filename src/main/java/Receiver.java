@@ -61,12 +61,12 @@ public class Receiver implements Loggable {
             log(receiverType, "Closed receive socket");
 
         } catch (SocketException e) {
-            log(exceptType, "SocketException:\n" + e.getMessage());
+            System.err.println("SocketException:\n" + e.getMessage());
             Thread.currentThread().interrupt();
         } catch (LineUnavailableException e) {
-            log(exceptType, "LineUnavailableException:\n" + e.getMessage());
+            System.err.println("LineUnavailableException:\n" + e.getMessage());
         } catch (IOException e) {
-            log(exceptType, "IOException:\n" + e.getMessage());
+            System.err.println("IOException:\n" + e.getMessage());
         }
     }
 

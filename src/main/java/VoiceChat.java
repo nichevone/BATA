@@ -1,7 +1,3 @@
-/*
-    Welcome to BATA (Basic Audio Transmitting Application)!
-*/
-
 public class VoiceChat {
     private static final int WINDOW_WIDTH = 650;
     private static final int WINDOW_HEIGHT = 400;

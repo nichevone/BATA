@@ -33,7 +33,7 @@ public class ConnectionHandler implements Loggable {
             senderThread.start();
 
         } catch (InterruptedException e) {
-            log(exceptType, "InterruptedException in main. Thread got interrupted while waiting for sender address.\n" + e.getMessage());
+            System.err.println("InterruptedException in main. Thread got interrupted while waiting for sender address.\n" + e.getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ public class ConnectionHandler implements Loggable {
             receiverThread.start();
 
         } catch (UnknownHostException e) {
-            log(exceptType, "UnknownHostException in main. Host's IP-address is unknown.\n" + e.getMessage());
+            System.err.println("UnknownHostException in main. Host's IP-address is unknown.\n" + e.getMessage());
         }
     }
 

@@ -55,11 +55,11 @@ public class Sender implements Loggable {
             log(senderType, "Closed send socket");
 
         } catch (SocketException e) {
-            log(exceptType, "SocketException:\n" + e.getMessage());
+            System.err.println("SocketException:\n" + e.getMessage());
         } catch (LineUnavailableException e) {
-            log(exceptType, "LineUnavailableException:\n" + e.getMessage());
+            System.err.println("LineUnavailableException:\n" + e.getMessage());
         } catch (IOException e) {
-            log(exceptType, "IOException:\n" + e.getMessage());
+            System.err.println("IOException:\n" + e.getMessage());
         }
     }
     

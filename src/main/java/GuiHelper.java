@@ -1,8 +1,6 @@
-import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.net.URL;
 import java.awt.Image;
-import java.io.File;
-import java.nio.file.Path;
-import java.io.IOException;
 
 public class GuiHelper {
     public boolean isPortValid(String port) {
@@ -22,15 +20,16 @@ public class GuiHelper {
     }
 
     public Image getIconImage() {
-        Path imgPath = Path.of("src/main/resources/icon.png");
-
         try {
-            return ImageIO.read(new File(imgPath.toUri()));
-        } catch (IOException e) {
-            System.err.println("Error reading icon image:\n"+e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.err.println("IllegalArgumentException while getting icon image:\n" + e.getMessage());
+            // Using URL for proper read packaged in a .jar
+            URL imageUrl = getClass().getResource("icon.png");
+            if (imageUrl != null) {
+                return new ImageIcon(imageUrl).getImage();
+            }
+        } catch (NullPointerException e) {
+            System.err.println("NullPointerException while getting icon image:\n" + e.getMessage());
         }
+
         return null;
     }
 }

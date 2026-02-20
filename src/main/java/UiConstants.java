@@ -14,6 +14,7 @@ public interface UiConstants {
     String HOST_BUTTON_TEXT = "Host";
     String RETURN_BUTTON_TEXT = "Return";
 
+    Font actionChoiceLabelFont = new Font("SansSerif", Font.BOLD, 48);
     Font titleLabelFont = new Font("SansSerif", Font.BOLD, 28);
     Font textLabelFont = new Font("SansSerif", Font.PLAIN, 20);
     Font textAreaFont = new Font("SansSerif", Font.PLAIN, 12);

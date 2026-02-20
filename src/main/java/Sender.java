@@ -27,7 +27,6 @@ public class Sender implements Loggable {
             DataLine.Info micInfo = new DataLine.Info(TargetDataLine.class, format);
             TargetDataLine microphone = (TargetDataLine) AudioSystem.getLine(micInfo);
 
-            // Receiver information
             log(senderType, "Sending to address:\n" + receiverAddress);
 
             // Buffer var. for receiving audio
@@ -54,11 +53,14 @@ public class Sender implements Loggable {
             microphone.close();
             log(senderType, "Closed send socket");
 
-        } catch (SocketException e) {
+        }
+        catch (SocketException e) {
             System.err.println("SocketException:\n" + e.getMessage());
-        } catch (LineUnavailableException e) {
+        }
+        catch (LineUnavailableException e) {
             System.err.println("LineUnavailableException:\n" + e.getMessage());
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.err.println("IOException:\n" + e.getMessage());
         }
     }

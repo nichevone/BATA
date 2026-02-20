@@ -26,7 +26,8 @@ public class GuiHelper {
             if (imageUrl != null) {
                 return new ImageIcon(imageUrl).getImage();
             }
-        } catch (NullPointerException e) {
+        }
+        catch (NullPointerException e) {
             System.err.println("NullPointerException while getting icon image:\n" + e.getMessage());
         }
 

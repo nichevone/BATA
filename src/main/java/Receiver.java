@@ -28,19 +28,19 @@ public class Receiver implements Loggable {
             DataLine.Info speakerInfo = new DataLine.Info(SourceDataLine.class, format);
             SourceDataLine speaker = (SourceDataLine) AudioSystem.getLine(speakerInfo);
 
+            log(receiverType, "Your IP-address:\n" + InetAddress.getLocalHost().getHostAddress());
+
             // Buffer var. for receiving audio
             byte[] buffer = new byte[BUFFER_SIZE];
             DatagramPacket receivePacket = new DatagramPacket(
                     buffer, 0, BUFFER_SIZE
             );
 
-            log(receiverType, "Your IP-address:\n" + InetAddress.getLocalHost().getHostAddress());
-
             // Receive first packet to establish connection
             log(receiverType, "Waiting for first packet...");
             socket.receive(receivePacket);
 
-            // Sender information
+            // Set sender address so handler could see it
             senderAddress = receivePacket.getAddress();
             log(receiverType, "Receiving from:\n" + senderAddress);
 
@@ -60,12 +60,15 @@ public class Receiver implements Loggable {
             senderAddress = null;
             log(receiverType, "Closed receive socket");
 
-        } catch (SocketException e) {
+        }
+        catch (SocketException e) {
             System.err.println("SocketException:\n" + e.getMessage());
             Thread.currentThread().interrupt();
-        } catch (LineUnavailableException e) {
+        }
+        catch (LineUnavailableException e) {
             System.err.println("LineUnavailableException:\n" + e.getMessage());
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.err.println("IOException:\n" + e.getMessage());
         }
     }

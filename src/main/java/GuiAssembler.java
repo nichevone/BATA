@@ -30,7 +30,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
     // Arrays are used for these to modify objects on the different cards
     // 0 - for host card, 1 - for connecting card
     private JTextField[] portTextField = new JTextField[2];
-    private JButton[] actionButton = new JButton[2];
+    private JButton[] actionChoiceButton = new JButton[2];
     private JButton[] disconnectButton = new JButton[2];
     private JTextArea[] infoTextArea = new JTextArea[2];
 
@@ -45,6 +45,25 @@ public class GuiAssembler implements ActionListener, UiConstants {
         frame = new JFrame();
         cardLayout = new CardLayout();
         cardsPanel = new JPanel(cardLayout);
+
+        // Yeah, these all catches are just for look and feel
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName()
+            );
+        }
+        catch (UnsupportedLookAndFeelException e) {
+            System.err.println("ClassNotFoundException:\n" + e.getMessage());
+        }
+        catch (ClassNotFoundException e) {
+            System.err.println("InstantiationException:\n" + e.getMessage());
+        }
+        catch (InstantiationException e) {
+            System.err.println("IllegalAccessException:\n" + e.getMessage());
+        }
+        catch (IllegalAccessException e) {
+            System.err.println("UnsupportedLookAndFeelException:\n" + e.getMessage());
+        }
 
         try {
             startCard = createStartPanel();
@@ -64,9 +83,11 @@ public class GuiAssembler implements ActionListener, UiConstants {
             frame.setVisible(true);
 
             cardLayout.show(cardsPanel, START_NAV_TEXT);
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             System.err.println("IllegalArgumentException:\n" + e.getMessage());
-        } catch (NullPointerException e) {
+        }
+        catch (NullPointerException e) {
             System.err.println("NullPointerException.\n" + e.getMessage());
         }
     }
@@ -75,8 +96,8 @@ public class GuiAssembler implements ActionListener, UiConstants {
         JPanel panel = new JPanel(new GridLayout(2, 1));
         JPanel actionChoicePanel = new JPanel(new GridLayout(2, 1, BORDER_GAP, BORDER_GAP));
 
-        JLabel chooseActionLabel = new JLabel("Choose action:", JLabel.CENTER);
-        chooseActionLabel.setFont(titleLabelFont);
+        JLabel actionChoiceLabel = new JLabel("Choose action:", JLabel.CENTER);
+        actionChoiceLabel.setFont(actionChoiceLabelFont);
 
         hostNavButton = new JButton(HOST_NAV_TEXT);
         hostNavButton.setFont(buttonFont);
@@ -88,7 +109,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         actionChoicePanel.add(hostNavButton);
         actionChoicePanel.add(connectNavButton);
 
-        panel.add(chooseActionLabel); // Label first
+        panel.add(actionChoiceLabel); // Label first
         panel.add(actionChoicePanel); // Panel w/ buttons after the label
         panel.setBorder(EMPTY_BORDER);
 
@@ -126,12 +147,12 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
         JLabel portLabel = new JLabel("Enter port:", JLabel.CENTER);
         portTextField[cardIndex] = new JTextField();
-        actionButton[cardIndex] = new JButton(); // text's assigned in the switch statement
+        actionChoiceButton[cardIndex] = new JButton(); // text's assigned in the switch statement
         disconnectButton[cardIndex] = new JButton(DISCONNECT_BUTTON_TEXT);
         returnButton = new JButton(RETURN_BUTTON_TEXT);
 
         portTextField[cardIndex].setHorizontalAlignment(JTextField.CENTER);
-        actionButton[cardIndex].addActionListener(this);
+        actionChoiceButton[cardIndex].addActionListener(this);
         disconnectButton[cardIndex].addActionListener(this);
         returnButton.addActionListener(this);
 
@@ -139,7 +160,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
         portLabel.setFont(textLabelFont);
         portTextField[cardIndex].setFont(textFieldFont);
-        actionButton[cardIndex].setFont(buttonFont);
+        actionChoiceButton[cardIndex].setFont(buttonFont);
         disconnectButton[cardIndex].setFont(buttonFont);
         returnButton.setFont(buttonFont);
 
@@ -163,7 +184,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
         switch (actionType) {
             case "HOSTING" -> {
-                actionButton[cardIndex].setText(HOST_BUTTON_TEXT);
+                actionChoiceButton[cardIndex].setText(HOST_BUTTON_TEXT);
 
                 rightGbc.gridx = 0;
                 rightGbc.gridy = 2;
@@ -173,7 +194,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
                 rightPane.add(new JLabel(""), rightGbc);
             }
             case "CONNECTING" -> {
-                actionButton[cardIndex].setText(CONNECT_BUTTON_TEXT);
+                actionChoiceButton[cardIndex].setText(CONNECT_BUTTON_TEXT);
                 
                 JLabel addressLabel = new JLabel("Enter host's IP-address:", JLabel.CENTER);
                 addressLabel.setFont(textLabelFont);
@@ -203,7 +224,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         
         rightGbc.gridx = 1;
         rightGbc.gridy = 4;
-        rightPane.add(actionButton[cardIndex], rightGbc);
+        rightPane.add(actionChoiceButton[cardIndex], rightGbc);
         
         rightGbc.gridx = 2;
         rightGbc.gridy = 4;
@@ -226,13 +247,13 @@ public class GuiAssembler implements ActionListener, UiConstants {
         hostGbc.gridx = 0;
         hostGbc.gridy = 1;
         hostGbc.gridwidth = 1;
-        hostGbc.weightx = 10;
+        hostGbc.weightx = 5;
         hostGbc.weighty = 1;
         hostPanel.add(leftPane, hostGbc);
 
         hostGbc.gridx = 1;
         hostGbc.gridy = 1;
-        hostGbc.weightx = 0.1;
+        hostGbc.weightx = 1;
         hostPanel.add(rightPane, hostGbc);
 
         return hostPanel;
@@ -274,12 +295,12 @@ public class GuiAssembler implements ActionListener, UiConstants {
         String port = portTextField[HOSTING_CARD_INDEX].getText();
 
         if (!guiHelper.isPortValid(port)) {
-            portTextField[HOSTING_CARD_INDEX].setText("Invalid port.");
+            portTextField[HOSTING_CARD_INDEX].setText("Invalid port");
             return;
         }
 
         disconnectButton[HOSTING_CARD_INDEX].setEnabled(true);
-        actionButton[HOSTING_CARD_INDEX].setEnabled(false);
+        actionChoiceButton[HOSTING_CARD_INDEX].setEnabled(false);
 
         this.port = Integer.parseInt(port);
         controller.initiateConnection();
@@ -288,18 +309,19 @@ public class GuiAssembler implements ActionListener, UiConstants {
     private void connect() {
         String address = addressTextField.getText();
         String port = portTextField[CONNECTING_CARD_INDEX].getText();
-        
+
+        if (!guiHelper.isPortValid(port)) {
+            portTextField[CONNECTING_CARD_INDEX].setText("Invalid port");
+            return;
+        }
+
         if (!guiHelper.isAddressValid(address)) {
             addressTextField.setText("Invalid address");
             return;
         }
-        if (!guiHelper.isPortValid(port)) {
-            portTextField[CONNECTING_CARD_INDEX].setText("Invalid port.");
-            return;
-        }
 
         disconnectButton[CONNECTING_CARD_INDEX].setEnabled(true);
-        actionButton[CONNECTING_CARD_INDEX].setEnabled(false);
+        actionChoiceButton[CONNECTING_CARD_INDEX].setEnabled(false);
 
         this.port = Integer.parseInt(port);
         this.address = address;
@@ -310,8 +332,8 @@ public class GuiAssembler implements ActionListener, UiConstants {
         disconnectButton[HOSTING_CARD_INDEX].setEnabled(false);
         disconnectButton[CONNECTING_CARD_INDEX].setEnabled(false);
 
-        actionButton[HOSTING_CARD_INDEX].setEnabled(true);
-        actionButton[CONNECTING_CARD_INDEX].setEnabled(true);
+        actionChoiceButton[HOSTING_CARD_INDEX].setEnabled(true);
+        actionChoiceButton[CONNECTING_CARD_INDEX].setEnabled(true);
 
         controller.initiateDisconnection();
     }
@@ -330,7 +352,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         disconnectButton[CONNECTING_CARD_INDEX].setEnabled(false);
     }
 
-    void setInfoAreaText(StringBuffer info) {
+    public void setInfoAreaText(StringBuffer info) {
         if (isCurrentCardHosting()) {
             infoTextArea[HOSTING_CARD_INDEX].setText(info.toString());
         }

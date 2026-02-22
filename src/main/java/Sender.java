@@ -54,6 +54,8 @@ public class Sender implements Loggable {
             log(senderType, "Closed send socket");
 
         }
+        // FIXME: sending not starting in some cases.
+        // When SocketException is thrown, is stops sending
         catch (SocketException e) {
             System.err.println("SocketException:\n" + e.getMessage());
         }

@@ -9,14 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="">
+    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="l&amp;f set, code reformat, little other changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ConnectionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GuiAssembler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GuiAssembler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GuiHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GuiHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Receiver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Sender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UiConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UiConstants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,7 +203,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771367007652</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="l&amp;f set, code reformat, little other changes">
+      <option name="closed" value="true" />
+      <created>1771546683144</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1771546683144</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -219,7 +223,8 @@
     <MESSAGE value="Created LICENSE" />
     <MESSAGE value="Updated README.md" />
     <MESSAGE value="Updated README.md (arch, roadmap, drawbacks)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated README.md (arch, roadmap, drawbacks)" />
+    <MESSAGE value="l&amp;f set, code reformat, little other changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="l&amp;f set, code reformat, little other changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

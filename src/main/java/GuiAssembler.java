@@ -96,7 +96,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         JPanel panel = new JPanel(new GridLayout(2, 1));
         JPanel actionChoicePanel = new JPanel(new GridLayout(2, 1, BORDER_GAP, BORDER_GAP));
 
-        JLabel actionChoiceLabel = new JLabel("Choose action:", JLabel.CENTER);
+        JLabel actionChoiceLabel = new JLabel("Choose action", JLabel.CENTER);
         actionChoiceLabel.setFont(actionChoiceLabelFont);
 
         hostNavButton = new JButton(HOST_NAV_TEXT);
@@ -145,7 +145,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         // Right part - port input and the button
         JPanel rightPane = new JPanel(new GridBagLayout());
 
-        JLabel portLabel = new JLabel("Enter port:", JLabel.CENTER);
+        JLabel portLabel = new JLabel("Port", JLabel.CENTER);
         portTextField[cardIndex] = new JTextField();
         actionChoiceButton[cardIndex] = new JButton(); // text's assigned in the switch statement
         disconnectButton[cardIndex] = new JButton(DISCONNECT_BUTTON_TEXT);
@@ -196,7 +196,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
             case "CONNECTING" -> {
                 actionChoiceButton[cardIndex].setText(CONNECT_BUTTON_TEXT);
                 
-                JLabel addressLabel = new JLabel("Enter host's IP-address:", JLabel.CENTER);
+                JLabel addressLabel = new JLabel("Host's IP-address", JLabel.CENTER);
                 addressLabel.setFont(textLabelFont);
                 
                 addressTextField = new JTextField();

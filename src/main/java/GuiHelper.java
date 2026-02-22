@@ -22,7 +22,7 @@ public class GuiHelper {
     public Image getIconImage() {
         try {
             // Using URL for proper read packaged in a .jar
-            URL imageUrl = getClass().getResource("icon.png");
+            URL imageUrl = getClass().getResource("resources/icon.png");
             if (imageUrl != null) {
                 return new ImageIcon(imageUrl).getImage();
             }

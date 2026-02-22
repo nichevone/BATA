@@ -4,8 +4,8 @@ import java.net.*;
 import java.io.IOException;
 
 public class Sender implements Loggable {
-    final int BUFFER_SIZE = 1024;
-    final AudioFormat format = new AudioFormat(
+    private final int BUFFER_SIZE = 1024;
+    private final AudioFormat format = new AudioFormat(
             8000.0f, // Sample rate,
             16, // Sample size in bits
             1, // Channels
@@ -44,6 +44,7 @@ public class Sender implements Loggable {
 
             while (isOpened) {
                 int bytesRead = microphone.read(buffer, 0, BUFFER_SIZE);
+
                 if (bytesRead > 0) {
                     socket.send(sendPacket);
                 }

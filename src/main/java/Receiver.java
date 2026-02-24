@@ -4,6 +4,7 @@ import java.net.*;
 import java.io.IOException;
 
 public class Receiver implements Loggable {
+    private final int TIMEOUT_AMOUNT_MILLIS = 1000; // 1 second
     private final int BUFFER_SIZE = 1024;
     private final AudioFormat format = new AudioFormat(
             8000.0f, // Sample rate,
@@ -17,18 +18,20 @@ public class Receiver implements Loggable {
     private InetAddress senderAddress = null;
     private volatile boolean isOpened = true;
 
+    private final Object addressLock = new Object();
+
     public void receive(int port) {
         // Reset isOpened state
         isOpened = true;
 
         try (DatagramSocket socket = new DatagramSocket(port)) {
-            log(receiverType, "Socket for receiving's on port: " + port);
+            log(receiverType, "Socket for receiving is on port: " + port);
+            log(receiverType, "Your IP-address:\n" + InetAddress.getLocalHost().getHostAddress());
+            socket.setSoTimeout(TIMEOUT_AMOUNT_MILLIS);
 
             // Setting speakers
             DataLine.Info speakerInfo = new DataLine.Info(SourceDataLine.class, format);
             SourceDataLine speaker = (SourceDataLine) AudioSystem.getLine(speakerInfo);
-
-            log(receiverType, "Your IP-address:\n" + InetAddress.getLocalHost().getHostAddress());
 
             // Buffer var. for receiving audio
             byte[] buffer = new byte[BUFFER_SIZE];
@@ -38,17 +41,38 @@ public class Receiver implements Loggable {
 
             // Receive first packet to establish connection
             log(receiverType, "Waiting for first packet...");
-            socket.receive(receivePacket);
+            boolean gotFirstPackage = false;
+            while (isOpened && !gotFirstPackage) {
+                try {
+                    socket.receive(receivePacket);
+                    gotFirstPackage = true;
+                }
+                catch (SocketTimeoutException e) {
+                    // continue the loop
+                }
+            }
+
+            if (!isOpened) {
+                log(receiverType, "Connection wasn't established");
+                synchronized (addressLock) {
+                    addressLock.notify();
+                }
+                return;
+            }
+
+            log(receiverType, "Connection established");
 
             // Set sender address so handler could see it
-            senderAddress = receivePacket.getAddress();
-            log(receiverType, "Receiving from:\n" + senderAddress);
+            synchronized (addressLock) {
+                senderAddress = receivePacket.getAddress();
+                addressLock.notify();
+            }
 
             // Starting speakers
             speaker.open(format);
             speaker.start();
 
-            log(receiverType, "Receiving is started");
+            log(receiverType, "Receiving from:\n" + senderAddress);
 
             while (isOpened) {
                 socket.receive(receivePacket);
@@ -62,14 +86,13 @@ public class Receiver implements Loggable {
 
         }
         catch (SocketException e) {
-            System.err.println("SocketException:\n" + e.getMessage());
-            Thread.currentThread().interrupt();
+            System.err.println("SocketException in receiver:\n" + e.getMessage());
         }
         catch (LineUnavailableException e) {
-            System.err.println("LineUnavailableException:\n" + e.getMessage());
+            System.err.println("LineUnavailableException in receiver:\n" + e.getMessage());
         }
         catch (IOException e) {
-            System.err.println("IOException:\n" + e.getMessage());
+            System.err.println("IOException in receiver:\n" + e.getMessage());
         }
     }
 
@@ -79,8 +102,20 @@ public class Receiver implements Loggable {
     public void close() {
         isOpened = false;
     }
+
+    public InetAddress waitForSenderAddress() throws InterruptedException {
+        synchronized (addressLock) {
+            // Wait for address availability
+            while (senderAddress == null && isOpened) {
+                addressLock.wait();
+            }
+            return senderAddress;
+        }
+    }
     public InetAddress getSenderAddress() {
-        return senderAddress;
+        synchronized (addressLock) {
+            return senderAddress;
+        }
     }
 
     @Override

@@ -22,12 +22,11 @@ public class Sender implements Loggable {
 
         try (DatagramSocket socket = new DatagramSocket()) {
             log(senderType, "Socket for sending created");
+            log(senderType, "Sending to address:\n" + receiverAddress);
 
             // Setting microphone
             DataLine.Info micInfo = new DataLine.Info(TargetDataLine.class, format);
             TargetDataLine microphone = (TargetDataLine) AudioSystem.getLine(micInfo);
-
-            log(senderType, "Sending to address:\n" + receiverAddress);
 
             // Buffer var. for receiving audio
             byte[] buffer = new byte[BUFFER_SIZE];
@@ -55,16 +54,14 @@ public class Sender implements Loggable {
             log(senderType, "Closed send socket");
 
         }
-        // FIXME: sending not starting in some cases.
-        // When SocketException is thrown, is stops sending
         catch (SocketException e) {
-            System.err.println("SocketException:\n" + e.getMessage());
+            System.err.println("SocketException in sender:\n" + e.getMessage());
         }
         catch (LineUnavailableException e) {
-            System.err.println("LineUnavailableException:\n" + e.getMessage());
+            System.err.println("LineUnavailableException in sender:\n" + e.getMessage());
         }
         catch (IOException e) {
-            System.err.println("IOException:\n" + e.getMessage());
+            System.err.println("IOException in sender:\n" + e.getMessage());
         }
     }
     

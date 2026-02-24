@@ -16,22 +16,20 @@ public class ConnectionHandler implements Loggable {
                     receiver.receive(port), "host-receiver");
             receiverThread.start();
 
-            // TODO: make this not busy-waiting
-            while (receiver.getSenderAddress() == null) {
-                // If user disconnects while waiting for receiver
-                if (!receiver.isOpened()) {
-                    return;
-                }
-                Thread.sleep(1000);
+            InetAddress senderAddress = receiver.waitForSenderAddress();
+            if (senderAddress == null) {
+                // Connection was closed before it was established
+                return;
             }
 
             // Start thread for sending
             senderThread = new Thread(() ->
-                sender.send(port, receiver.getSenderAddress()), "host-sender");
+                sender.send(port, senderAddress), "host-sender");
             senderThread.start();
 
         }
         catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             System.err.println("InterruptedException in main. Thread got interrupted while waiting for sender address.\n" + e.getMessage());
         }
     }
@@ -57,7 +55,6 @@ public class ConnectionHandler implements Loggable {
     }
 
     public void disconnect() {
-        log(handlerType, "Closing sockets...");
         sender.close();
         receiver.close();
 

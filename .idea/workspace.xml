@@ -9,8 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="changed the icon reading path, added private modifier to buffers and AudioFormats">
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="Change the icon reading path, add some private modifiers">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ConnectionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Receiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Sender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UiConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UiConstants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,7 +237,31 @@
       <option name="project" value="LOCAL" />
       <updated>1771799800322</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Chang the icon reading path, add some private modifiers">
+      <option name="closed" value="true" />
+      <created>1771800107084</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1771800107084</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Chang the icon reading path, add some private modifiers">
+      <option name="closed" value="true" />
+      <created>1771800173489</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1771800173489</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Change the icon reading path, add some private modifiers">
+      <option name="closed" value="true" />
+      <created>1771800185908</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1771800185908</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -248,7 +276,9 @@
     <MESSAGE value="l&amp;f set, code reformat, little other changes" />
     <MESSAGE value="labels rename" />
     <MESSAGE value="changed the icon reading path, added private modifier to buffers and AudioFormats" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed the icon reading path, added private modifier to buffers and AudioFormats" />
+    <MESSAGE value="Chang the icon reading path, add some private modifiers" />
+    <MESSAGE value="Change the icon reading path, add some private modifiers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change the icon reading path, add some private modifiers" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -96,9 +96,6 @@ public class Receiver implements Loggable {
         }
     }
 
-    public boolean isOpened() {
-        return isOpened;
-    }
     public void close() {
         isOpened = false;
     }
@@ -109,11 +106,6 @@ public class Receiver implements Loggable {
             while (senderAddress == null && isOpened) {
                 addressLock.wait();
             }
-            return senderAddress;
-        }
-    }
-    public InetAddress getSenderAddress() {
-        synchronized (addressLock) {
             return senderAddress;
         }
     }

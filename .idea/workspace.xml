@@ -9,7 +9,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="Change the icon reading path, add some private modifiers">
+    <list default="true" id="d96ce72a-ada9-43ec-9b58-1c15bbf73471" name="Changes" comment="Fixed busy-waiting (TODO) and sender/receiver not starting in some cases (FIXME). Changed logging, lowered GUI label font. Built jar">
+      <change afterPath="$PROJECT_DIR$/out/artifacts/VoiceChat_jar/VoiceChat_v1.0.1-beta.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ConnectionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Receiver.java" afterDir="false" />
@@ -278,7 +279,8 @@
     <MESSAGE value="changed the icon reading path, added private modifier to buffers and AudioFormats" />
     <MESSAGE value="Chang the icon reading path, add some private modifiers" />
     <MESSAGE value="Change the icon reading path, add some private modifiers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change the icon reading path, add some private modifiers" />
+    <MESSAGE value="Fixed busy-waiting (TODO) and sender/receiver not starting in some cases (FIXME). Changed logging, lowered GUI label font. Built jar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed busy-waiting (TODO) and sender/receiver not starting in some cases (FIXME). Changed logging, lowered GUI label font. Built jar" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

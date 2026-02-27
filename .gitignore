@@ -42,3 +42,6 @@ src/main/java/*.class
 ### Laptop SSH ###
 sshKey
 sshKey.pub
+
+### Artifacts build ###
+out/

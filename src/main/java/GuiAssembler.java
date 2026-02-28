@@ -29,10 +29,10 @@ public class GuiAssembler implements ActionListener, UiConstants {
     private JTextField addressTextField;
     // Arrays are used for these to modify objects on the different cards
     // 0 - for host card, 1 - for connecting card
-    private JTextField[] portTextField = new JTextField[2];
-    private JButton[] actionChoiceButton = new JButton[2];
-    private JButton[] disconnectButton = new JButton[2];
-    private JTextArea[] infoTextArea = new JTextArea[2];
+    private final JTextField[] portTextField = new JTextField[2];
+    private final JButton[] actionChoiceButton = new JButton[2];
+    private final JButton[] disconnectButton = new JButton[2];
+    private final JTextArea[] infoTextArea = new JTextArea[2];
 
 
 

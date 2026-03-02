@@ -16,20 +16,41 @@ public class GuiDialog {
 
         dialog = optionPane.createDialog(parent, title);
         dialog.setModalityType(Dialog.ModalityType.MODELESS);
-        // Do not exit program on close, just dispose dialog
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setAlwaysOnTop(true);
+        // No need to close dialog, handled manually
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
     }
 
-    public void show() {
-        dialog.setVisible(true);
+    /* Calculate the dialog like this:
+     * ------------------
+     * |                |
+     * |   main frame   |  --------
+     * |                |  |dialog|
+     * ------------------  --------
+    */
+    private int[] calculateLocation(Component parent) {
+        Point frameLocation = parent.getLocation();
+        Dimension frameSize = parent.getSize();
+
+        int x = (int)(frameLocation.getX() + frameSize.getWidth());
+        int y = (int)(frameLocation.getY() + frameSize.getHeight()) - dialog.getHeight();
+
+        return new int[]{x, y};
+    }
+
+    public void setLocation() {
+        final int[] coordinates = calculateLocation(dialog.getParent());
+        dialog.setLocation(coordinates[0], coordinates[1]); // x, y
     }
 
     public void setSize(int width, int height) {
         dialog.setSize(width, height);
     }
 
-    public void dispose() {
-        dialog.dispose();
+    public void show() {
+        dialog.setVisible(true);
+    }
+
+    public void hide() {
+        dialog.setVisible(false);
     }
 }

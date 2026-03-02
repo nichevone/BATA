@@ -13,9 +13,10 @@ public class GuiAssembler implements ActionListener, UiConstants {
     private final int CONNECTING_CARD_INDEX = 1;
 
     private String currentCard;
+    private boolean isMuted = false;
     private int port;
     private String address;
-
+    
     private JFrame frame;
     private JPanel cardsPanel;
     private CardLayout cardLayout;
@@ -23,9 +24,12 @@ public class GuiAssembler implements ActionListener, UiConstants {
     private JPanel hostingCard;
     private JPanel connectingCard;
 
+    GuiDialog controlPanelDialog;
+
     private JButton hostNavButton;
     private JButton connectNavButton;
     private JButton returnButton;
+    private JButton muteButton;
     private JTextField addressTextField;
     // Arrays are used for these to modify objects on the different cards
     // 0 - for host card, 1 - for connecting card
@@ -45,25 +49,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         frame = new JFrame();
         cardLayout = new CardLayout();
         cardsPanel = new JPanel(cardLayout);
-
-        // Yeah, these all catches are just for look and feel
-        try {
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName()
-            );
-        }
-        catch (UnsupportedLookAndFeelException e) {
-            System.err.println("ClassNotFoundException:\n" + e.getMessage());
-        }
-        catch (ClassNotFoundException e) {
-            System.err.println("InstantiationException:\n" + e.getMessage());
-        }
-        catch (InstantiationException e) {
-            System.err.println("IllegalAccessException:\n" + e.getMessage());
-        }
-        catch (IllegalAccessException e) {
-            System.err.println("UnsupportedLookAndFeelException:\n" + e.getMessage());
-        }
+        setLookAndFeel();
 
         try {
             startCard = createStartPanel();
@@ -82,6 +68,11 @@ public class GuiAssembler implements ActionListener, UiConstants {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setVisible(true);
 
+            JPanel controlJPanel = createControlPanel();
+            controlPanelDialog = new GuiDialog("Control Panel", controlJPanel, frame);
+            controlPanelDialog.setSize(200, 120);
+            controlPanelDialog.setLocation();
+
             cardLayout.show(cardsPanel, START_NAV_TEXT);
         }
         catch (IllegalArgumentException e) {
@@ -89,6 +80,26 @@ public class GuiAssembler implements ActionListener, UiConstants {
         }
         catch (NullPointerException e) {
             System.err.println("NullPointerException.\n" + e.getMessage());
+        }
+    }
+
+    private void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName()
+            );
+        }
+        catch (UnsupportedLookAndFeelException e) {
+            System.err.println("ClassNotFoundException:\n" + e.getMessage());
+        }
+        catch (ClassNotFoundException e) {
+            System.err.println("InstantiationException:\n" + e.getMessage());
+        }
+        catch (InstantiationException e) {
+            System.err.println("IllegalAccessException:\n" + e.getMessage());
+        }
+        catch (IllegalAccessException e) {
+            System.err.println("UnsupportedLookAndFeelException:\n" + e.getMessage());
         }
     }
 
@@ -118,14 +129,11 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
     private JPanel createPanel(String actionType) throws IllegalArgumentException {
         int cardIndex;
-        if (actionType.equals("HOSTING")) {
-            cardIndex = HOSTING_CARD_INDEX;
-        }
-        else if (actionType.equals("CONNECTING")) {
-            cardIndex = CONNECTING_CARD_INDEX;
-        }
-        else {
-            throw new IllegalArgumentException("actionType is invalid");
+
+        switch (actionType) {
+            case "HOSTING" -> cardIndex = HOSTING_CARD_INDEX;
+            case "CONNECTING" -> cardIndex = CONNECTING_CARD_INDEX;
+            default -> throw new IllegalArgumentException("actionType is invalid");
         }
 
         JLabel titleLabel = new JLabel(actionType, JLabel.CENTER);
@@ -259,22 +267,36 @@ public class GuiAssembler implements ActionListener, UiConstants {
         return hostPanel;
     }
 
+    private JPanel createControlPanel() {
+        JPanel panel = new JPanel(new GridLayout(1, 1));
+        muteButton = new JButton(MUTE_BUTTON_TEXT);
+
+        muteButton.setFont(buttonFont);
+        muteButton.setBackground(Color.GREEN);
+        muteButton.addActionListener(this);
+        // Disabled by default before user hosts or connects
+        muteButton.setEnabled(false);
+
+        panel.add(muteButton, JPanel.CENTER_ALIGNMENT);
+        return panel;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         switch (command) {
             case HOST_NAV_TEXT ->
             {
-                infoTextArea[HOSTING_CARD_INDEX].setText("");
                 currentCard = HOST_NAV_TEXT;
                 command = HOST_NAV_TEXT;
+                prepareUi();
             }
 
             case CONNECT_NAV_TEXT ->
             {
-                infoTextArea[CONNECTING_CARD_INDEX].setText("");
                 currentCard = CONNECT_NAV_TEXT;
                 command = CONNECT_NAV_TEXT;
+                prepareUi();
             }
             case HOST_BUTTON_TEXT -> host();
             case CONNECT_BUTTON_TEXT -> connect();
@@ -284,6 +306,9 @@ public class GuiAssembler implements ActionListener, UiConstants {
                 command = START_NAV_TEXT;
                 disconnect();
                 updateUi();
+            }
+            case MUTE_BUTTON_TEXT -> {
+                mute();
             }
             default -> { return; }
         }
@@ -301,6 +326,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
         disconnectButton[HOSTING_CARD_INDEX].setEnabled(true);
         actionChoiceButton[HOSTING_CARD_INDEX].setEnabled(false);
+        muteButton.setEnabled(true);
 
         this.port = Integer.parseInt(port);
         controller.initiateConnection();
@@ -322,6 +348,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
         disconnectButton[CONNECTING_CARD_INDEX].setEnabled(true);
         actionChoiceButton[CONNECTING_CARD_INDEX].setEnabled(false);
+        muteButton.setEnabled(true);
 
         this.port = Integer.parseInt(port);
         this.address = address;
@@ -334,8 +361,31 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
         actionChoiceButton[HOSTING_CARD_INDEX].setEnabled(true);
         actionChoiceButton[CONNECTING_CARD_INDEX].setEnabled(true);
+        muteButton.setEnabled(false);
 
+        // Unmute if muted
+        if (isMuted) { mute(); }
         controller.initiateDisconnection();
+    }
+
+    private void mute() {
+        controller.initiateMute();
+
+        isMuted = !isMuted;
+        if (isMuted) {
+            muteButton.setBackground(Color.RED);
+        } else {
+            muteButton.setBackground(Color.GREEN);
+        }
+    }
+
+    private void prepareUi() {
+        controlPanelDialog.show();
+
+        switch (currentCard) {
+            case HOST_NAV_TEXT -> infoTextArea[HOSTING_CARD_INDEX].setText("");
+            case CONNECT_NAV_TEXT -> infoTextArea[CONNECTING_CARD_INDEX].setText("");
+        }
     }
 
     private void updateUi() {
@@ -347,9 +397,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         portTextField[CONNECTING_CARD_INDEX].setText("");
 
         controller.cleanInfoArea();
-
-        disconnectButton[HOSTING_CARD_INDEX].setEnabled(false);
-        disconnectButton[CONNECTING_CARD_INDEX].setEnabled(false);
+        controlPanelDialog.hide();
     }
 
     public void setInfoAreaText(StringBuffer info) {

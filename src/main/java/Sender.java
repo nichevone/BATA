@@ -15,6 +15,7 @@ public class Sender implements Loggable {
 
     private InfoLogger logger;
     private volatile boolean isOpened = true;
+    private volatile boolean isMuted = false;
 
     public void send(int port, InetAddress receiverAddress) {
         // Reset isOpened state
@@ -44,7 +45,8 @@ public class Sender implements Loggable {
             while (isOpened) {
                 int bytesRead = microphone.read(buffer, 0, BUFFER_SIZE);
 
-                if (bytesRead > 0) {
+                // TODO: make mute not just cover socket.send
+                if (bytesRead > 0 && !isMuted) {
                     socket.send(sendPacket);
                 }
             }
@@ -67,6 +69,9 @@ public class Sender implements Loggable {
     
     public void close() {
         isOpened = false;
+    }
+    public void setMuted(boolean muteCommand) {
+        isMuted = muteCommand;
     }
 
     @Override

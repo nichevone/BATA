@@ -47,9 +47,7 @@ public class Receiver implements Loggable {
                     socket.receive(receivePacket);
                     gotFirstPackage = true;
                 }
-                catch (SocketTimeoutException e) {
-                    // continue the loop
-                }
+                catch (SocketTimeoutException e) { /* Continue the loop */ }
             }
 
             if (!isOpened) {
@@ -73,9 +71,11 @@ public class Receiver implements Loggable {
             speaker.start();
 
             log(receiverType, "Receiving from:\n" + senderAddress);
-
             while (isOpened) {
-                socket.receive(receivePacket);
+                try {
+                    socket.receive(receivePacket);
+                }
+                catch (SocketTimeoutException e) { /* Continue the loop */ }
                 speaker.write(buffer, 0, receivePacket.getLength());
             }
 

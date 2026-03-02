@@ -6,6 +6,8 @@ public class ConnectionHandler implements Loggable {
     private final Sender sender = new Sender();
     private InfoLogger logger;
 
+    private boolean isMuted = false;
+
     private Thread receiverThread;
     private Thread senderThread;
 
@@ -52,6 +54,13 @@ public class ConnectionHandler implements Loggable {
         catch (UnknownHostException e) {
             System.err.println("UnknownHostException in main. Host's IP-address is unknown.\n" + e.getMessage());
         }
+    }
+
+    public void mute() {
+        // Each click of mute button mutes or unmutes you
+        // Just like it is in all voice chats
+        isMuted = !isMuted;
+        sender.setMuted(isMuted);
     }
 
     public void disconnect() {

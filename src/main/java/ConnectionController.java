@@ -29,6 +29,10 @@ public class ConnectionController {
         gui.setAddress(null);
     }
 
+    public void initiateMute() {
+        handler.mute();
+    }
+
     public void cleanInfoArea() {
         info.setLength(0);
     }

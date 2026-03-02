@@ -13,6 +13,7 @@ public interface UiConstants {
     String DISCONNECT_BUTTON_TEXT = "Disconnect";
     String HOST_BUTTON_TEXT = "Host";
     String RETURN_BUTTON_TEXT = "Return";
+    String MUTE_BUTTON_TEXT = "Mute";
 
     Font actionChoiceLabelFont = new Font("SansSerif", Font.BOLD, 48);
     Font titleLabelFont = new Font("SansSerif", Font.BOLD, 24);

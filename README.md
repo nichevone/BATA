@@ -20,7 +20,7 @@ Connection is made using UDP. Currently, for sending and receiving signal Datagr
 
 ## Roadmap
 - [x] GUI
-- [ ] Mute button
+- [x] Mute button
 - [ ] Input gain changing
 - [ ] Ability to choose I/O devices
 - [ ] Different localizations

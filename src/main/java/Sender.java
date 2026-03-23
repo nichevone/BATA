@@ -35,6 +35,14 @@ public class Sender implements Loggable {
                     buffer, BUFFER_SIZE,
                     receiverAddress, port
             );
+            
+            // TODO: test this
+            // Send first packet if connecting to establish connection
+            for (int i = 0; i < buffer.length; i++) {
+                buffer[i] = 0;
+            }
+            socket.send(sendPacket);
+            System.out.println("Sender sent test packet");
 
             // Starting microphone
             microphone.open(format);

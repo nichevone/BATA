@@ -13,11 +13,11 @@ I was needed the tool to talk with my brother in the other room. Using heavy pro
 ## How do I use it?
 ### 1. HOST
 Click `HOST` button, enter any available (in your LAN) Port at the corresponding `Port` text area, and then click `Host`
-![img.png](ImageFiles/hosting_window.png)
+![img.png](images/hosting_window.png)
 
 ### 2. CONNECT
 Click `CONNECT` button, enter Port at `Port` and host's address at `Address` text areas, then click `Connect`
-![img.png](ImageFiles/connecting_window.png)
+![img.png](images/connecting_window.png)
 
 ### 3. Return
 Return button simply moves you back to main screen, **disconnects you and clears the output information area**

@@ -33,7 +33,7 @@ public class Receiver implements Loggable {
             DataLine.Info speakerInfo = new DataLine.Info(SourceDataLine.class, format);
             SourceDataLine speaker = (SourceDataLine) AudioSystem.getLine(speakerInfo);
 
-            // Buffer var. for receiving audio
+            // Buffer array for receiving audio
             byte[] buffer = new byte[BUFFER_SIZE];
             DatagramPacket receivePacket = new DatagramPacket(
                     buffer, 0, BUFFER_SIZE
@@ -50,21 +50,17 @@ public class Receiver implements Loggable {
                 catch (SocketTimeoutException e) { /* Continue the loop */ }
             }
 
-            if (!isOpened) {
-                log(receiverType, "Connection wasn't established");
-                synchronized (addressLock) {
-                    addressLock.notify();
-                }
-                return;
-            }
 
-            log(receiverType, "Connection established");
-
-            // Set sender address so handler could see it
             synchronized (addressLock) {
+                // Set sender address so handler could see it
                 senderAddress = receivePacket.getAddress();
                 addressLock.notify();
+                // If the host disconnects before anyone connects
+                if (!isOpened) {
+                    return;
+                }
             }
+            log(receiverType, "Connection established");
 
             // Starting speakers
             speaker.open(format);

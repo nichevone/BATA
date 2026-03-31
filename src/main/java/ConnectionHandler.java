@@ -21,6 +21,7 @@ public class ConnectionHandler implements Loggable {
             InetAddress senderAddress = receiver.waitForSenderAddress();
             if (senderAddress == null) {
                 // Connection was closed before it was established
+                log(receiverType, "Connection wasn't established");
                 return;
             }
 

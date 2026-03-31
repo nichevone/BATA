@@ -29,20 +29,12 @@ public class Sender implements Loggable {
             DataLine.Info micInfo = new DataLine.Info(TargetDataLine.class, format);
             TargetDataLine microphone = (TargetDataLine) AudioSystem.getLine(micInfo);
 
-            // Buffer var. for receiving audio
+            // Buffer array for receiving audio
             byte[] buffer = new byte[BUFFER_SIZE];
             DatagramPacket sendPacket = new DatagramPacket(
                     buffer, BUFFER_SIZE,
                     receiverAddress, port
             );
-            
-            // TODO: test this
-            // Send first packet if connecting to establish connection
-            for (int i = 0; i < buffer.length; i++) {
-                buffer[i] = 0;
-            }
-            socket.send(sendPacket);
-            System.out.println("Sender sent test packet");
 
             // Starting microphone
             microphone.open(format);

@@ -8,7 +8,7 @@ set "TIME=%dd%.%hh%.%min%
 echo %TIME%
 
 set "JAR_PATH=../out/artifacts/VoiceChat_jar"
-set "JAR_NAME=VoiceChat_v1.1.0-beta"
+set "JAR_NAME=VoiceChat_v1.1.1-beta"
 
 jpackage --app-version %TIME% ^
 --name %JAR_NAME% ^

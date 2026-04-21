@@ -4,7 +4,7 @@ import java.net.*;
 import java.io.IOException;
 
 public class Receiver implements Loggable {
-    private final int TIMEOUT_AMOUNT_MILLIS = 1000; // 1 second
+    private final int TIMEOUT_AMOUNT_MILLIS = 500; // 0.5 seconds
     private final int BUFFER_SIZE = 1024;
     private final AudioFormat format = new AudioFormat(
             8000.0f, // Sample rate,
@@ -25,15 +25,11 @@ public class Receiver implements Loggable {
         isOpened = true;
 
         try (DatagramSocket socket = new DatagramSocket(port)) {
+            socket.setSoTimeout(TIMEOUT_AMOUNT_MILLIS);
             log(receiverType, "Socket for receiving is on port: " + port);
             log(receiverType, "Your IP-address:\n" + InetAddress.getLocalHost().getHostAddress());
-            socket.setSoTimeout(TIMEOUT_AMOUNT_MILLIS);
 
-            // Setting speakers
-            DataLine.Info speakerInfo = new DataLine.Info(SourceDataLine.class, format);
-            SourceDataLine speaker = (SourceDataLine) AudioSystem.getLine(speakerInfo);
-
-            // Buffer var. for receiving audio
+            // Buffer array for receiving audio
             byte[] buffer = new byte[BUFFER_SIZE];
             DatagramPacket receivePacket = new DatagramPacket(
                     buffer, 0, BUFFER_SIZE
@@ -50,35 +46,45 @@ public class Receiver implements Loggable {
                 catch (SocketTimeoutException e) { /* Continue the loop */ }
             }
 
-            if (!isOpened) {
-                log(receiverType, "Connection wasn't established");
-                synchronized (addressLock) {
-                    addressLock.notify();
-                }
-                return;
-            }
+            // Set sender address so handler could see it.
+            // It can only be null or the real address
+            senderAddress = receivePacket.getAddress();
 
-            log(receiverType, "Connection established");
-
-            // Set sender address so handler could see it
             synchronized (addressLock) {
-                senderAddress = receivePacket.getAddress();
                 addressLock.notify();
+                if (!isOpened) {
+                    // Connection was closed before it was established
+                    log(receiverType, "Connection wasn't established");
+                    return;
+                }
             }
+            log(receiverType, "Connection established");
+            log(receiverType, "Receiving from:\n" + senderAddress);
+
+            // Setting speakers
+            DataLine.Info speakerInfo = new DataLine.Info(SourceDataLine.class, format);
+            SourceDataLine speaker = (SourceDataLine) AudioSystem.getLine(speakerInfo);
 
             // Starting speakers
             speaker.open(format);
             speaker.start();
 
-            log(receiverType, "Receiving from:\n" + senderAddress);
+            int lastLength;
             while (isOpened) {
                 try {
                     socket.receive(receivePacket);
+                    lastLength = receivePacket.getLength();
                 }
-                catch (SocketTimeoutException e) { /* Continue the loop */ }
-                speaker.write(buffer, 0, receivePacket.getLength());
+                catch (SocketTimeoutException e) {
+                    lastLength = 0;
+                }
+
+                if (lastLength > 1) {
+                    speaker.write(buffer, 0, receivePacket.getLength());
+                }
             }
 
+            speaker.drain();
             speaker.stop();
             speaker.close();
             senderAddress = null;

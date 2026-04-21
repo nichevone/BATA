@@ -25,24 +25,16 @@ public class Sender implements Loggable {
             log(senderType, "Socket for sending created");
             log(senderType, "Sending to address:\n" + receiverAddress);
 
-            // Setting microphone
-            DataLine.Info micInfo = new DataLine.Info(TargetDataLine.class, format);
-            TargetDataLine microphone = (TargetDataLine) AudioSystem.getLine(micInfo);
-
-            // Buffer var. for receiving audio
+            // Buffer array for receiving audio
             byte[] buffer = new byte[BUFFER_SIZE];
             DatagramPacket sendPacket = new DatagramPacket(
                     buffer, BUFFER_SIZE,
                     receiverAddress, port
             );
-            
-            // TODO: test this
-            // Send first packet if connecting to establish connection
-            for (int i = 0; i < buffer.length; i++) {
-                buffer[i] = 0;
-            }
-            socket.send(sendPacket);
-            System.out.println("Sender sent test packet");
+
+            // Setting microphone
+            DataLine.Info micInfo = new DataLine.Info(TargetDataLine.class, format);
+            TargetDataLine microphone = (TargetDataLine) AudioSystem.getLine(micInfo);
 
             // Starting microphone
             microphone.open(format);
@@ -53,7 +45,7 @@ public class Sender implements Loggable {
             while (isOpened) {
                 int bytesRead = microphone.read(buffer, 0, BUFFER_SIZE);
 
-                // TODO: make mute not just cover socket.send
+                // TODO: maybe make mute not just cover socket.send
                 if (bytesRead > 0 && !isMuted) {
                     socket.send(sendPacket);
                 }

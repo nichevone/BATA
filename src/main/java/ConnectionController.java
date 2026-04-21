@@ -2,7 +2,6 @@ import java.awt.EventQueue;
 
 public class ConnectionController {
     private final ConnectionHandler handler = new ConnectionHandler();
-    private InfoLogger logger;
     private GuiAssembler gui;
 
     StringBuffer info = new StringBuffer();
@@ -43,7 +42,6 @@ public class ConnectionController {
                 .append(": ")
                 .append(message)
                 .append("\n");
-
         gui.setInfoAreaText(info);
     }
 
@@ -58,8 +56,8 @@ public class ConnectionController {
         this.gui = gui;
     }
     public void setLogger(InfoLogger logger) {
-        this.logger = logger;
         // Push logger instance to handler
+        // Don't need logger in the ConnectionController class
         handler.setLogger(logger);
     }
 }

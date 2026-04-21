@@ -1,10 +1,9 @@
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class ConnectionHandler implements Loggable {
+public class ConnectionHandler {
     private final Receiver receiver = new Receiver();
     private final Sender sender = new Sender();
-    private InfoLogger logger;
 
     private boolean isMuted = false;
 
@@ -16,22 +15,25 @@ public class ConnectionHandler implements Loggable {
             // Start thread for receiving
             receiverThread = new Thread(() ->
                     receiver.receive(port), "host-receiver");
+            receiverThread.setDaemon(true);
             receiverThread.start();
 
             InetAddress senderAddress = receiver.waitForSenderAddress();
             if (senderAddress == null) {
-                // Connection was closed before it was established
                 return;
             }
 
             // Start thread for sending
             senderThread = new Thread(() ->
                 sender.send(port, senderAddress), "host-sender");
+            senderThread.setDaemon(true);
             senderThread.start();
 
         }
         catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            receiver.close();
+            interruptIfAlive(receiverThread);
             System.err.println("InterruptedException in main. Thread got interrupted while waiting for sender address.\n" + e.getMessage());
         }
     }
@@ -43,11 +45,13 @@ public class ConnectionHandler implements Loggable {
             // Start thread for sending
             senderThread = new Thread(() ->
                 sender.send(port, receiverAddress), "connect-sender");
+            senderThread.setDaemon(true);
             senderThread.start();
 
             // Start thread for receiving
             receiverThread = new Thread(() ->
                 receiver.receive(port), "connect-receiver");
+            receiverThread.setDaemon(true);
             receiverThread.start();
 
         }
@@ -77,14 +81,7 @@ public class ConnectionHandler implements Loggable {
         }
     }
 
-    @Override
-    public void log(char type, String message) {
-        logger.log(type, message);
-    }
-    @Override
     public void setLogger(InfoLogger logger) {
-        // Get logger instance from controller
-        this.logger = logger;
         // Set logger instance to sender and receiver
         sender.setLogger(logger);
         receiver.setLogger(logger);

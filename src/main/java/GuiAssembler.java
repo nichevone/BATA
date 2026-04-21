@@ -70,7 +70,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
             JPanel controlJPanel = createControlPanel();
             controlPanelDialog = new GuiDialog("Control Panel", controlJPanel, frame);
-            controlPanelDialog.setSize(200, 120);
+            controlPanelDialog.setSize(150, 90); // Dialog width and height
             controlPanelDialog.setLocation();
 
             cardLayout.show(cardsPanel, START_NAV_TEXT);
@@ -307,9 +307,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
                 disconnect();
                 updateUi();
             }
-            case MUTE_BUTTON_TEXT -> {
-                mute();
-            }
+            case MUTE_BUTTON_TEXT -> mute();
             default -> { return; }
         }
 
@@ -380,6 +378,8 @@ public class GuiAssembler implements ActionListener, UiConstants {
     }
 
     private void prepareUi() {
+        // Update dialog location in case user moved the window
+        controlPanelDialog.setLocation();
         controlPanelDialog.show();
 
         switch (currentCard) {

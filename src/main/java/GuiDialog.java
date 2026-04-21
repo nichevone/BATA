@@ -27,6 +27,7 @@ public class GuiDialog {
      * |                |  |dialog|
      * ------------------  --------
     */
+
     private int[] calculateLocation(Component parent) {
         Point frameLocation = parent.getLocation();
         Dimension frameSize = parent.getSize();

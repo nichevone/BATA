@@ -11,6 +11,8 @@ public class ConnectionController {
     }
 
     public void initiateConnection() {
+        cleanInfoArea();
+
         int port = getPort();
         String address = getAddress();
 

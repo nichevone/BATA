@@ -382,10 +382,7 @@ public class GuiAssembler implements ActionListener, UiConstants {
         controlPanelDialog.setLocation();
         controlPanelDialog.show();
 
-        switch (currentCard) {
-            case HOST_NAV_TEXT -> infoTextArea[HOSTING_CARD_INDEX].setText("");
-            case CONNECT_NAV_TEXT -> infoTextArea[CONNECTING_CARD_INDEX].setText("");
-        }
+        controller.cleanInfoArea();
     }
 
     private void updateUi() {
@@ -395,17 +392,14 @@ public class GuiAssembler implements ActionListener, UiConstants {
 
         portTextField[HOSTING_CARD_INDEX].setText("");
         portTextField[CONNECTING_CARD_INDEX].setText("");
-
-        controller.cleanInfoArea();
+        
         controlPanelDialog.hide();
     }
 
     public void setInfoAreaText(StringBuffer info) {
-        if (isCurrentCardHosting()) {
-            infoTextArea[HOSTING_CARD_INDEX].setText(info.toString());
-        }
-        else {
-            infoTextArea[CONNECTING_CARD_INDEX].setText(info.toString());
+        switch (currentCard) {
+            case HOST_NAV_TEXT -> infoTextArea[HOSTING_CARD_INDEX].setText(info.toString());
+            case CONNECT_NAV_TEXT -> infoTextArea[CONNECTING_CARD_INDEX].setText(info.toString());
         }
     }
 

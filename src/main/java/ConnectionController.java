@@ -11,8 +11,6 @@ public class ConnectionController {
     }
 
     public void initiateConnection() {
-        cleanInfoArea();
-
         int port = getPort();
         String address = getAddress();
 
@@ -36,6 +34,7 @@ public class ConnectionController {
 
     public void cleanInfoArea() {
         info.setLength(0);
+        gui.setInfoAreaText(info);
     }
 
     public void updateInfoArea(char type, String message) {

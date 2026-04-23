@@ -5,8 +5,11 @@ import java.awt.Image;
 public class GuiHelper {
     public boolean isPortValid(String port) {
         try {
-            Integer.parseInt(port);
-            return true; // If parsing was successful
+            // Apple integration?
+            int iPort = Integer.parseInt(port);
+
+            return iPort <= 65535 && iPort >= 0;
+
         } catch (NumberFormatException e) {
             return false; // If parsing fails
         }
